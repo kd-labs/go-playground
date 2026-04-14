@@ -534,3 +534,55 @@ func TestTopKFrequest(t *testing.T) {
 		})
 	}
 }
+
+func TestSortArray(t *testing.T) {
+	testCases := []struct {
+		name   string
+		nums   []int
+		expect []int
+	}{
+		{
+			name:   "it should return [1,1,1,1,2,3,9,10]",
+			nums:   []int{10, 9, 1, 1, 1, 2, 3, 1},
+			expect: []int{1, 1, 1, 1, 2, 3, 9, 10},
+		}, {
+			name:   "it should return [1,2,3,5,10]",
+			nums:   []int{5, 10, 2, 1, 3},
+			expect: []int{1, 2, 3, 5, 10},
+		}, {
+			name:   "it should return [-50000, 0, 50000]",
+			nums:   []int{50000, -50000, 0},
+			expect: []int{-50000, 0, 50000},
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.name, func(t *testing.T) {
+			actual := sortArray(tC.nums)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}
+
+func TestSortColors(t *testing.T) {
+	testCases := []struct {
+		name   string
+		colors []int
+		expect []int
+	}{
+		{
+			name:   "it should return [0,1,1,2]",
+			colors: []int{1, 0, 1, 2},
+			expect: []int{0, 1, 1, 2},
+		}, {
+			name:   "it should return [0,1,2]",
+			colors: []int{2, 1, 0},
+			expect: []int{0, 1, 2},
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.name, func(t *testing.T) {
+			actual := sortColors(tC.colors)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}
