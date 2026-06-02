@@ -1,6 +1,7 @@
 package main
 
 import (
+	"slices"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -582,6 +583,239 @@ func TestSortColors(t *testing.T) {
 	for _, tC := range testCases {
 		t.Run(tC.name, func(t *testing.T) {
 			actual := sortColors(tC.colors)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}
+
+func TestValidSudoku(t *testing.T) {
+	testCases := []struct {
+		name   string
+		board  [][]byte
+		expect bool
+	}{
+		{
+			name: "it should return true",
+			board: [][]byte{
+				{'1', '2', '.', '.', '3', '.', '.', '.', '.'},
+				{'4', '.', '.', '5', '.', '.', '.', '.', '.'},
+				{'.', '9', '8', '.', '.', '.', '.', '.', '3'},
+				{'5', '.', '.', '.', '6', '.', '.', '.', '4'},
+				{'.', '.', '.', '8', '.', '3', '.', '.', '5'},
+				{'7', '.', '.', '.', '2', '.', '.', '.', '6'},
+				{'.', '.', '.', '.', '.', '.', '2', '.', '.'},
+				{'.', '.', '.', '4', '1', '9', '.', '.', '8'},
+				{'.', '.', '.', '.', '8', '.', '.', '7', '9'},
+			},
+			expect: true,
+		}, {
+			name: "it should return false",
+			board: [][]byte{
+				{'1', '2', '.', '.', '3', '.', '.', '.', '.'},
+				{'4', '.', '.', '5', '.', '.', '.', '.', '.'},
+				{'.', '9', '1', '.', '.', '.', '.', '.', '3'},
+				{'5', '.', '.', '.', '6', '.', '.', '.', '4'},
+				{'.', '.', '.', '8', '.', '3', '.', '.', '5'},
+				{'7', '.', '.', '.', '2', '.', '.', '.', '6'},
+				{'.', '.', '.', '.', '.', '.', '2', '.', '.'},
+				{'.', '.', '.', '4', '1', '9', '.', '.', '8'},
+				{'.', '.', '.', '.', '8', '.', '.', '7', '9'},
+			},
+			expect: false,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.name, func(t *testing.T) {
+			actual := isValidSudoku(tC.board)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}
+
+func TestLongestConsecutive(t *testing.T) {
+	testCases := []struct {
+		name   string
+		input  []int
+		expect int
+	}{
+		{
+			name:   "it should return 4",
+			input:  []int{2, 20, 4, 10, 3, 4, 5},
+			expect: 4,
+		}, {
+			name:   "it should return 7",
+			input:  []int{0, 3, 2, 5, 4, 6, 1, 1},
+			expect: 7,
+		}, {
+			name:   "it should return 0",
+			input:  []int{},
+			expect: 0,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.name, func(t *testing.T) {
+			actual := longestConsecutive(tC.input)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}
+
+func TestMaxProfitII(t *testing.T) {
+	testCases := []struct {
+		name   string
+		prices []int
+		expect int
+	}{
+		{
+			name:   "it should return 7",
+			prices: []int{7, 1, 5, 3, 6, 4},
+			expect: 7,
+		}, {
+			name:   "it should return 4",
+			prices: []int{1, 2, 3, 4, 5},
+			expect: 4,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.name, func(t *testing.T) {
+			actual := maxProfitII(tC.prices)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}
+
+func TestMajorityElementII(t *testing.T) {
+	testCases := []struct {
+		name   string
+		nums   []int
+		expect []int
+	}{
+		{
+			name:   "it should return '[2,5]'",
+			nums:   []int{5, 2, 3, 2, 2, 2, 2, 5, 5, 5},
+			expect: []int{2, 5},
+		}, {
+			name:   "it should return '[4]'",
+			nums:   []int{4, 4, 4, 4, 4},
+			expect: []int{4},
+		}, {
+			name:   "it should return '[]'",
+			nums:   []int{1, 2, 3},
+			expect: []int{},
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.name, func(t *testing.T) {
+			actual := majorityElementII(tC.nums)
+			slices.Sort(actual)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}
+
+func TestFirstMissingPositive(t *testing.T) {
+	testCases := []struct {
+		name   string
+		input  []int
+		expect int
+	}{
+		{
+			name:   "it should return 1",
+			input:  []int{-1, 0, -2},
+			expect: 1,
+		}, {
+			name:   "it should return 3",
+			input:  []int{2, 4, 1},
+			expect: 3,
+		}, {
+			name:   "it should return 7",
+			input:  []int{1, 2, 4, 5, 6, 3, 1},
+			expect: 7,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.name, func(t *testing.T) {
+			actual := firstMissingPositive(tC.input)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}
+
+func TestReverseString(t *testing.T) {
+	testCases := []struct {
+		name   string
+		input  []byte
+		expect []byte
+	}{
+		{
+			name:   "it should return teen",
+			input:  []byte{'n', 'e', 'e', 't'},
+			expect: []byte{'t', 'e', 'e', 'n'},
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.name, func(t *testing.T) {
+			reverseString(tC.input)
+			require.Equal(t, tC.expect, tC.input)
+		})
+	}
+}
+
+func TestIsPalindrome(t *testing.T) {
+	testCases := []struct {
+		name   string
+		s      string
+		expect bool
+	}{
+		{
+			name:   "it should return true",
+			s:      "Was it a car or a cat I saw?",
+			expect: true,
+		}, {
+			name:   "it should return true",
+			s:      ",.",
+			expect: true,
+		}, {
+			name:   "it should return false",
+			s:      "tab a cat",
+			expect: false,
+		},
+	}
+
+	for _, tC := range testCases {
+		t.Run(tC.name, func(t *testing.T) {
+			actual := isPalindrome(tC.s)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}
+
+func TestValidPalindrome(t *testing.T) {
+	testCases := []struct {
+		name   string
+		s      string
+		expect bool
+	}{
+		{
+			name:   "0: it should return true",
+			s:      "aca",
+			expect: true,
+		},
+		{
+			name:   "1: it should return false",
+			s:      "abbadc",
+			expect: false,
+		},
+		{
+			name:   "2: it should return true",
+			s:      "abbda",
+			expect: true,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.name, func(t *testing.T) {
+			chkr := PalindromeChecker{}
+			actual := chkr.validPalindrome(tC.s)
 			require.Equal(t, tC.expect, actual)
 		})
 	}

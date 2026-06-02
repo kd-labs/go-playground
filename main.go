@@ -493,3 +493,246 @@ func quickSort(nums []int, start int, end int) {
 	quickSort(nums, start, partitionIdx-1)
 	quickSort(nums, partitionIdx+1, end)
 }
+
+func isValidSudoku(board [][]byte) bool {
+	type coord struct {
+		r int
+		c int
+	}
+
+	rowSet := make(map[int]map[byte]struct{})
+	colSet := make(map[int]map[byte]struct{})
+	subMatrixMap := make(map[coord]map[byte]struct{})
+
+	for i := 0; i < 9; i++ {
+		rowSet[i] = make(map[byte]struct{})
+		colSet[i] = make(map[byte]struct{})
+
+		if i%3 == 0 {
+			for k := 0; k < 3; k++ {
+				subMatrixMap[coord{i / 3, k}] = make(map[byte]struct{})
+			}
+		}
+	}
+
+	for r, row := range board {
+		for c, n := range row {
+			if n == '.' {
+				continue
+			}
+			if _, found := rowSet[r][n]; found {
+				return false
+			}
+			if _, found := colSet[c][n]; found {
+				return false
+			}
+
+			subMatrixCoord := coord{r / 3, c / 3}
+			if _, found := subMatrixMap[subMatrixCoord][n]; found {
+				return false
+			}
+
+			rowSet[r][n] = struct{}{}
+			colSet[c][n] = struct{}{}
+			subMatrixMap[subMatrixCoord][n] = struct{}{}
+		}
+	}
+	return true
+}
+
+func longestConsecutive(nums []int) int {
+	if len(nums) == 0 {
+		return 0
+	}
+	set := make(map[int]struct{})
+	longest := 1
+
+	for _, n := range nums {
+		set[n] = struct{}{}
+	}
+
+	for _, n := range nums {
+		// check if 'n' is in middle of a sequence
+		if _, found := set[n-1]; found {
+			continue
+		}
+
+		// at this point, 'n' is established to be start of sequence
+		// check if subsequent n+1 exists
+		k := n
+		l := 1
+		for {
+			if _, exists := set[k+1]; exists {
+				k = k + 1
+				l++
+			} else {
+				break
+			}
+		}
+		longest = max(l, longest)
+	}
+	return longest
+}
+
+func maxProfitII(prices []int) int {
+	if len(prices) == 1 {
+		return 0
+	}
+
+	profit := 0
+	buyPrice := prices[0]
+	prices = prices[1:]
+	for _, price := range prices {
+		if price < buyPrice {
+			buyPrice = price
+		} else {
+			profit += price - buyPrice
+			buyPrice = price
+		}
+	}
+	return profit
+}
+
+func majorityElementII(nums []int) []int {
+	majorityEls := make(map[int]int)
+	partitionSize := len(nums) / 3
+
+	for _, n := range nums {
+		majorityEls[n] += 1
+
+		if len(majorityEls) == 3 {
+			for k, count := range majorityEls {
+				if count == 1 {
+					delete(majorityEls, k)
+				}
+				majorityEls[k] = count - 1
+			}
+		}
+	}
+
+	res := make([]int, 0)
+	for k := range majorityEls {
+		count := 0
+		for _, n := range nums {
+			if k == n {
+				count++
+			}
+		}
+		if count > partitionSize {
+			res = append(res, k)
+		}
+	}
+	return res
+}
+
+func firstMissingPositive(nums []int) int {
+	hasOne := false
+
+	size := len(nums)
+
+	for i, n := range nums {
+		if n == 1 {
+			hasOne = true
+		} else if n <= 0 || n > size {
+			nums[i] = 1
+		}
+	}
+
+	if !hasOne {
+		return 1
+	}
+
+	for _, n := range nums {
+		i := abs(n) - 1
+		if nums[i] > 0 {
+			nums[i] = -nums[i]
+		}
+	}
+
+	for i, n := range nums {
+		if n > 0 {
+			return i + 1
+		}
+	}
+	return size + 1
+}
+
+func abs(n int) int {
+	if n >= 0 {
+		return n
+	}
+	return -n
+}
+
+func reverseString(s []byte) {
+	if len(s) == 1 {
+		return
+	}
+
+	l := 0
+	r := len(s) - 1
+
+	for l < r {
+		s[l], s[r] = s[r], s[l]
+		l++
+		r--
+	}
+}
+
+func isPalindrome(s string) bool {
+	s = strings.ReplaceAll(s, " ", "")
+	s = strings.ToLower(s)
+	s = sanitize(s)
+
+	if len(s) == 0 || len(s) == 1 {
+		return true
+	}
+
+	l := 0
+	r := len(s) - 1
+
+	for l < r {
+		if s[l] != s[r] {
+			return false
+		}
+		l++
+		r--
+	}
+	return true
+}
+
+func isAlphaNumeric(c rune) bool {
+	// Check if the byte value falls within the range of alphanumeric characters
+	return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9')
+}
+
+func sanitize(s string) string {
+	var newS []rune
+	for _, c := range s {
+		if isAlphaNumeric(c) {
+			newS = append(newS, c)
+		}
+	}
+	return string(newS)
+}
+
+type PalindromeChecker struct {
+	deleted bool
+}
+
+func (p PalindromeChecker) validPalindrome(s string) bool {
+	if len(s) == 0 || len(s) == 1 {
+		return true
+	}
+
+	if s[0] == s[len(s)-1] {
+		return p.validPalindrome(s[1 : len(s)-1])
+	} else {
+		if p.deleted {
+			return false
+		} else {
+			p.deleted = true
+		}
+		return p.validPalindrome(s[1:]) || p.validPalindrome(s[:len(s)-1])
+	}
+}
