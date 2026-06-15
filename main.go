@@ -2,6 +2,8 @@ package main
 
 import (
 	"log"
+	"slices"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -256,19 +258,6 @@ func countSeniors(details []string) int {
 		}
 	}
 	return res
-}
-
-func twoSum(nums []int, target int) []int {
-	htable := make(map[int]int)
-	for i, a := range nums {
-		b := target - a
-		k, exists := htable[b]
-		if exists {
-			return []int{i, k}
-		}
-		htable[a] = i
-	}
-	return nil
 }
 
 func findMaxConsecutiveOnes(nums []int) int {
@@ -814,4 +803,435 @@ func removeDuplicates(nums []int) int {
 	}
 
 	return uniqueIdx + 1
+}
+
+func twoSum(numbers []int, target int) []int {
+	var res []int
+
+	l, r := 0, len(numbers)-1
+
+	for l < r {
+		sum := numbers[l] + numbers[r]
+		if sum == target {
+			res = append(res, l+1, r+1)
+			break
+		} else if sum > target {
+			r--
+		} else {
+			l++
+		}
+	}
+
+	return res
+}
+
+func threeSum(nums []int) [][]int {
+	var res [][]int
+	sort.Ints(nums)
+	s := len(nums)
+
+	for i, a := range nums {
+
+		if i > 0 && a == nums[i-1] {
+			continue
+		}
+
+		target := -a
+		l := i + 1
+		r := s - 1
+
+		for l < r {
+			sum := nums[l] + nums[r]
+			if sum == target {
+				res = append(res, []int{a, nums[l], nums[r]})
+				l++
+				for nums[l] == nums[l-1] && l < r {
+					l++
+				}
+			} else if sum > target {
+				r--
+			} else {
+				l++
+			}
+		}
+	}
+
+	return res
+}
+
+func fourSum(nums []int, target int) [][]int {
+	if len(nums) < 4 {
+		return [][]int{}
+	}
+
+	var res [][]int
+
+	sort.Ints(nums)
+	s := len(nums)
+
+	for i := 0; i < s-3; i++ {
+
+		a := nums[i]
+
+		if i > 0 && a == nums[i-1] {
+			continue
+		}
+
+		for k := i + 1; k < len(nums)-2; k++ {
+			b := nums[k]
+
+			if k-i > 1 && b == nums[k-1] {
+				continue
+			}
+
+			twoSumTarget := target - a - b
+			l := k + 1
+			r := s - 1
+
+			for l < r {
+				sum := nums[l] + nums[r]
+				if sum == twoSumTarget {
+					res = append(res, []int{a, b, nums[l], nums[r]})
+					l++
+
+					for nums[l] == nums[l-1] && l < r {
+						l++
+					}
+				} else if sum > twoSumTarget {
+					r--
+				} else {
+					l++
+				}
+			}
+
+		}
+	}
+	return res
+}
+
+func maxWaterContainer(heights []int) int {
+	if len(heights) == 2 {
+		smallColumn := min(heights[0], heights[1])
+		return smallColumn * smallColumn
+	}
+
+	var maxWater int
+	l := 0
+	r := len(heights) - 1
+
+	for l < r {
+		water := min(heights[l], heights[r]) * (r - l)
+		maxWater = max(maxWater, water)
+		if heights[l] < heights[r] {
+			l++
+		} else {
+			r--
+		}
+	}
+	return maxWater
+}
+
+func rotate(nums []int, k int) {
+	if len(nums) == 1 {
+		return
+	}
+
+	k = k % len(nums)
+
+	// reverse the whole slice
+	l := 0
+	r := len(nums) - 1
+
+	for l < r {
+		nums[l], nums[r] = nums[r], nums[l]
+		l++
+		r--
+	}
+
+	// revers the first k elements
+	l = 0
+	r = k - 1
+	for l < r {
+		nums[l], nums[r] = nums[r], nums[l]
+		l++
+		r--
+	}
+
+	// reverse the remaining elements
+	l = k
+	r = len(nums) - 1
+	for l < r {
+		nums[l], nums[r] = nums[r], nums[l]
+		l++
+		r--
+	}
+}
+
+func numRescueBoats(people []int, limit int) int {
+	slices.Sort(people)
+
+	var res int
+	if len(people) == 1 {
+		return 1
+	}
+
+	l := 0
+	r := len(people) - 1
+
+	for l <= r {
+		if people[l]+people[r] <= limit {
+			l++
+		}
+		res++
+		r--
+	}
+
+	return res
+}
+
+func calPoints(ops []string) int {
+	records := make([]int, 1000)
+	i := -1
+
+	for _, op := range ops {
+		switch op {
+		case "+":
+			op1 := records[i]
+			op2 := records[i-1]
+			i++
+			records[i] = op1 + op2
+		case "D":
+			i++
+			prevScore := records[i-1]
+			records[i] = 2 * prevScore
+		case "C":
+			records[i] = 30001
+			i--
+		default:
+			score, _ := strconv.Atoi(op)
+			i++
+			records[i] = score
+		}
+	}
+
+	var total int
+	for k := 0; k <= i; k++ {
+		if records[k] == 30001 {
+			continue
+		}
+		total += records[k]
+	}
+
+	return total
+}
+
+type Stack[T any] struct {
+	arr []T
+	tos int
+}
+
+func NewStack[T any]() *Stack[T] {
+	return &Stack[T]{
+		arr: make([]T, 10000),
+		tos: -1,
+	}
+}
+
+func (s *Stack[T]) Push(val T) {
+	s.tos++
+	s.arr[s.tos] = val
+}
+
+func (s *Stack[T]) Pop() T {
+	if s.tos < 0 {
+		var a T
+		return a
+	}
+	res := s.arr[s.tos]
+	s.tos--
+	return res
+}
+
+func (s *Stack[T]) Size() int {
+	return len(s.arr)
+}
+
+func (s *Stack[T]) Peek() T {
+	var p T
+	if s.tos >= 0 {
+		return s.arr[s.tos]
+	}
+	return p
+}
+
+func (s *Stack[T]) ToArray() []T {
+	res := make([]T, 0, 100)
+	for i := range s.tos + 1 {
+		res = append(res, s.arr[i])
+	}
+	return res
+}
+
+func (s *Stack[T]) isEmpty() bool {
+	return s.tos < 0
+}
+
+func asteroidCollision(asteroids []int) []int {
+	stk := NewStack[int]()
+
+	var asteroidDestroyed bool
+	for _, asteroid := range asteroids {
+		asteroidDestroyed = false
+		if stk.isEmpty() || stk.Peek() < 0 || asteroid > 0 {
+			stk.Push(asteroid)
+		} else {
+			// control will enter only when incoming asteroid is -ve
+			for !stk.isEmpty() && stk.Peek() > 0 {
+				o := stk.Pop()
+				if o+asteroid < 0 {
+					continue
+				} else if o+asteroid == 0 {
+					asteroidDestroyed = true
+					break
+				} else {
+					asteroidDestroyed = true
+					stk.Push(o)
+					break
+				}
+			}
+
+			if !asteroidDestroyed {
+				stk.Push(asteroid)
+			}
+		}
+	}
+
+	return stk.ToArray()
+}
+
+func modInt(a int) int {
+	if a < 0 {
+		return -a
+	}
+	return a
+}
+
+func simplifyPath(path string) string {
+	prevDir := ".."
+	pathFrags := strings.Split(path, "/")
+
+	stk := NewStack[string]()
+
+	for _, frag := range pathFrags {
+		if len(frag) == 0 || frag == "." {
+			continue
+		} else if frag == prevDir {
+			stk.Pop()
+		} else {
+			stk.Push(frag)
+		}
+	}
+
+	res := strings.Builder{}
+	res.WriteString("/")
+	fragArr := stk.ToArray()
+	res.WriteString(strings.Join(fragArr, "/"))
+
+	return res.String()
+}
+
+//	func decodeString(s string) string {
+//		if len(s) < 4 {
+//			return s
+//		}
+//
+//		characterStk := NewStack[string]()
+//		multiplierStk := NewStack[int]()
+//		bracketsStk := NewStack[rune]()
+//
+//		var res strings.Builder
+//
+//		var multiplier int
+//		for _, c := range s {
+//
+//			digit, err := strconv.ParseInt(string(c), 10, 8)
+//			if err == nil {
+//				// rune is a digit
+//				multiplier = multiplier*10 + int(digit)
+//			} else if c == '[' {
+//				bracketsStk.Push('[')
+//				multiplierStk.Push(multiplier)
+//				multiplier = 0
+//			} else if c == ']' {
+//				s := characterStk.Pop()
+//				n := multiplierStk.Pop()
+//				_ = bracketsStk.Pop()
+//				r := strings.Repeat(s, n)
+//
+//				if bracketsStk.isEmpty() {
+//					res.WriteString(r)
+//				} else {
+//					a := characterStk.Pop()
+//					characterStk.Push(a + r)
+//				}
+//			} else if bracketsStk.isEmpty() {
+//				// rune is a letter but outside brackets
+//				res.WriteRune(c)
+//			} else {
+//				characterStk.Push(characterStk.Pop() + string(c))
+//			}
+//		}
+//
+//		return res.String()
+//	}
+func decodeString(s string) string {
+	if len(s) < 4 {
+		return s
+	}
+
+	stk := NewStack[any]()
+
+	var res strings.Builder
+
+	var multiplier int
+	for _, c := range s {
+
+		digit, err := strconv.ParseInt(string(c), 10, 8)
+		if err == nil {
+			// rune is a digit
+			multiplier = multiplier*10 + int(digit)
+		} else if c == '[' {
+			stk.Push(multiplier)
+			multiplier = 0
+		} else if c == ']' {
+			var s string
+			var n int
+
+			for {
+				o := stk.Pop()
+				tmp, ok := o.(string)
+				if ok {
+					s = tmp + s
+				} else {
+					n, _ = o.(int)
+					break
+				}
+			}
+
+			r := strings.Repeat(s, n)
+
+			if stk.isEmpty() {
+				res.WriteString(r)
+			} else {
+				stk.Push(r)
+			}
+		} else if stk.isEmpty() {
+			// rune is a letter but outside brackets
+			res.WriteRune(c)
+		} else {
+			stk.Push(string(c))
+		}
+	}
+
+	return res.String()
 }

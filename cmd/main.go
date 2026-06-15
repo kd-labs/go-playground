@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"time"
+	"runtime"
 )
 
 type Inner struct {
@@ -42,6 +42,5 @@ type Outer struct {
 // }
 
 func main() {
-	cutoff := time.Now().AddDate(0, -18, 0)
-	fmt.Println(int(cutoff.Month()))
+	fmt.Println("Logical CPUs: ", runtime.GOMAXPROCS(0))
 }
