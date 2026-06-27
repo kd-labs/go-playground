@@ -1146,3 +1146,61 @@ func TestDecodeString(t *testing.T) {
 		})
 	}
 }
+
+func TestDailyTemperatures(t *testing.T) {
+	testCases := []struct {
+		desc         string
+		temperatures []int
+		expect       []int
+	}{
+		{
+			desc:         "it should return [1,4,1,2,1,0,0]",
+			temperatures: []int{30, 38, 30, 36, 35, 40, 28},
+			expect:       []int{1, 4, 1, 2, 1, 0, 0},
+		}, {
+			desc:         "it should return [0,0,0]",
+			temperatures: []int{22, 21, 20},
+			expect:       []int{0, 0, 0},
+		}, {
+			desc:         "it should return [8,1,5,4,3,2,1,1,0,0]",
+			temperatures: []int{89, 62, 70, 58, 47, 47, 46, 76, 100, 70},
+			expect:       []int{8, 1, 5, 4, 3, 2, 1, 1, 0, 0},
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			actual := dailyTemperatures(tC.temperatures)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}
+
+func TestStockSpanner(t *testing.T) {
+	expect := []int{1, 1, 1, 2, 1, 4, 6}
+	actual := make([]int, 0)
+	stkSpanner := NewStockSpanner()
+	actual = append(actual, stkSpanner.Next(100))
+	actual = append(actual, stkSpanner.Next(80))
+	actual = append(actual, stkSpanner.Next(60))
+	actual = append(actual, stkSpanner.Next(70))
+	actual = append(actual, stkSpanner.Next(60))
+	actual = append(actual, stkSpanner.Next(75))
+	actual = append(actual, stkSpanner.Next(85))
+
+	require.Equal(t, expect, actual)
+}
+
+func TestMinStack(t *testing.T) {
+	minStk := NewMinStack()
+
+	minStk.Push(1)
+	minStk.Push(2)
+	minStk.Push(0)
+	m := minStk.GetMin()
+	require.Equal(t, 0, m)
+	minStk.Pop()
+	k := minStk.Top()
+	require.Equal(t, 2, k)
+	m = minStk.GetMin()
+	require.Equal(t, 1, m)
+}

@@ -1140,50 +1140,6 @@ func simplifyPath(path string) string {
 	return res.String()
 }
 
-//	func decodeString(s string) string {
-//		if len(s) < 4 {
-//			return s
-//		}
-//
-//		characterStk := NewStack[string]()
-//		multiplierStk := NewStack[int]()
-//		bracketsStk := NewStack[rune]()
-//
-//		var res strings.Builder
-//
-//		var multiplier int
-//		for _, c := range s {
-//
-//			digit, err := strconv.ParseInt(string(c), 10, 8)
-//			if err == nil {
-//				// rune is a digit
-//				multiplier = multiplier*10 + int(digit)
-//			} else if c == '[' {
-//				bracketsStk.Push('[')
-//				multiplierStk.Push(multiplier)
-//				multiplier = 0
-//			} else if c == ']' {
-//				s := characterStk.Pop()
-//				n := multiplierStk.Pop()
-//				_ = bracketsStk.Pop()
-//				r := strings.Repeat(s, n)
-//
-//				if bracketsStk.isEmpty() {
-//					res.WriteString(r)
-//				} else {
-//					a := characterStk.Pop()
-//					characterStk.Push(a + r)
-//				}
-//			} else if bracketsStk.isEmpty() {
-//				// rune is a letter but outside brackets
-//				res.WriteRune(c)
-//			} else {
-//				characterStk.Push(characterStk.Pop() + string(c))
-//			}
-//		}
-//
-//		return res.String()
-//	}
 func decodeString(s string) string {
 	if len(s) < 4 {
 		return s
@@ -1234,4 +1190,110 @@ func decodeString(s string) string {
 	}
 
 	return res.String()
+}
+
+func dailyTemperatures(temperatures []int) []int {
+	res := make([]int, len(temperatures))
+	i := len(temperatures) - 1
+
+	stk := NewStack[int]()
+
+	stk.Push(i)
+	res[i] = 0
+	i--
+
+	for ; i >= 0; i-- {
+		currTemp := temperatures[i]
+
+		for !stk.isEmpty() && currTemp >= temperatures[stk.Peek()] {
+			_ = stk.Pop()
+		}
+
+		if stk.isEmpty() {
+			res[i] = 0
+		} else {
+			res[i] = stk.Peek() - i
+		}
+
+		stk.Push(i)
+	}
+
+	return res
+}
+
+///////// Stock Spanner /////////////////////
+
+type StockSpanner struct {
+	stk *Stack[int]
+}
+
+func NewStockSpanner() StockSpanner {
+	return StockSpanner{
+		stk: NewStack[int](),
+	}
+}
+
+func (this *StockSpanner) Next(price int) int {
+	span := this.span(price)
+	this.stk.Push(price)
+	return span
+}
+
+func (this *StockSpanner) span(price int) int {
+	res := 1
+
+	arr := this.stk.ToArray()
+	i := len(arr) - 1
+	for i >= 0 && arr[i] <= price {
+		res++
+		i--
+	}
+
+	return res
+}
+
+/////////////////////////////////////////////////
+
+type Pair struct {
+	val int
+	min int
+}
+
+type MinStack struct {
+	arr []Pair
+	tos int
+}
+
+func NewMinStack() MinStack {
+	return MinStack{
+		arr: make([]Pair, 1000),
+		tos: -1,
+	}
+}
+
+func (this *MinStack) Push(val int) {
+	if this.tos == -1 {
+		this.tos++
+		this.arr[this.tos] = Pair{val: val, min: val}
+		return
+	}
+
+	min := this.arr[this.tos].min
+	if min > val {
+		min = val
+	}
+	this.tos++
+	this.arr[this.tos] = Pair{val, min}
+}
+
+func (this *MinStack) Pop() {
+	this.tos--
+}
+
+func (this *MinStack) Top() int {
+	return this.arr[this.tos].val
+}
+
+func (this *MinStack) GetMin() int {
+	return this.arr[this.tos].min
 }
