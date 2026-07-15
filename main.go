@@ -448,3 +448,48 @@ func bucketSort(nums []int, len int, idxFn func(int) int) []int {
 
 	return bucket
 }
+
+func sortArray(nums []int) []int {
+	numToIdxMapper := func(num int) int {
+		return num + 50000
+	}
+	bucketSorted := bucketSort(nums, 100001, numToIdxMapper)
+
+	var res []int
+	for idx, val := range bucketSorted {
+		for val > 0 {
+			res = append(res, idx-50000)
+			val--
+		}
+	}
+	return res
+}
+
+func sortColors(colors []int) []int {
+	quickSort(colors, 0, len(colors)-1)
+	return colors
+}
+
+func quickSort(nums []int, start int, end int) {
+	// Base Case
+	if end-start+1 <= 1 {
+		return
+	}
+
+	pivot := nums[end]
+	partitionIdx := start
+
+	for i := start; i < end; i++ {
+		if nums[i] < pivot {
+			// swap value at i with sortIdx
+			nums[partitionIdx], nums[i] = nums[i], nums[partitionIdx]
+			partitionIdx++
+		}
+	}
+
+	nums[end], nums[partitionIdx] = nums[partitionIdx], pivot
+
+	// recursive call for left and right partitions
+	quickSort(nums, start, partitionIdx-1)
+	quickSort(nums, partitionIdx+1, end)
+}
