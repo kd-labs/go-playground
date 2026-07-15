@@ -897,3 +897,252 @@ func TestRemoveDuplicates(t *testing.T) {
 		})
 	}
 }
+
+func TestTwoSum(t *testing.T) {
+	testCases := []struct {
+		name    string
+		numbers []int
+		target  int
+		expect  []int
+	}{
+		{
+			name:    "it should return [1,2]",
+			numbers: []int{1, 2, 3, 4},
+			target:  3,
+			expect:  []int{1, 2},
+		}, {
+			name:    "it should return [2,4]",
+			numbers: []int{2, 3, 4},
+			target:  6,
+			expect:  []int{1, 3},
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.name, func(t *testing.T) {
+			actual := twoSum(tC.numbers, tC.target)
+			slices.Sort(actual)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}
+
+func TestThreeSum(t *testing.T) {
+	testCases := []struct {
+		name   string
+		nums   []int
+		expect [][]int
+	}{
+		{
+			name:   "it should return [[-1,-1,2], [-1,0,1]]",
+			nums:   []int{-1, 0, 1, 2, -1, -4},
+			expect: [][]int{{-1, -1, 2}, {-1, 0, 1}},
+		}, {
+			name:   "it should return [[-2,0,2]",
+			nums:   []int{-2, 0, 0, 2, 2},
+			expect: [][]int{{-2, 0, 2}},
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.name, func(t *testing.T) {
+			actual := threeSum(tC.nums)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}
+
+func TestFourSum(t *testing.T) {
+	testCases := []struct {
+		name   string
+		nums   []int
+		target int
+		expect [][]int
+	}{
+		{
+			name:   "it should return [[-3,0,3,3], [-3,1,2,3]",
+			nums:   []int{3, 2, 3, -3, 1, 0},
+			target: 3,
+			expect: [][]int{{-3, 0, 3, 3}, {-3, 1, 2, 3}},
+		}, {
+			name:   "it should return [[2,2,2,2]]",
+			nums:   []int{2, 2, 2, 2, 2},
+			target: 8,
+			expect: [][]int{{2, 2, 2, 2}},
+		}, {
+			name:   "it should return [[-4,0,1,2], [-1,-1,0,1]",
+			nums:   []int{-1, 0, 1, 2, -1, -4},
+			target: -1,
+			expect: [][]int{{-4, 0, 1, 2}, {-1, -1, 0, 1}},
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.name, func(t *testing.T) {
+			actual := fourSum(tC.nums, tC.target)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}
+
+func TestMaxWaterContainer(t *testing.T) {
+	testCases := []struct {
+		desc    string
+		heights []int
+		expect  int
+	}{
+		{
+			desc:    "it should return 36",
+			heights: []int{1, 7, 2, 5, 4, 7, 3, 6},
+			expect:  36,
+		}, {
+			desc:    "it should return 1",
+			heights: []int{1, 2},
+			expect:  1,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			actual := maxWaterContainer(tC.heights)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}
+
+func TestRotateArray(t *testing.T) {
+	testCases := []struct {
+		desc   string
+		nums   []int
+		k      int
+		expect []int
+	}{
+		{
+			desc:   "it should return [5,6,7,8,1,2,3,4]",
+			nums:   []int{1, 2, 3, 4, 5, 6, 7, 8},
+			k:      4,
+			expect: []int{5, 6, 7, 8, 1, 2, 3, 4},
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			rotate(tC.nums, tC.k)
+			require.Equal(t, tC.expect, tC.nums)
+		})
+	}
+}
+
+func TestNumRescueBoats(t *testing.T) {
+	testCases := []struct {
+		desc   string
+		people []int
+		limit  int
+		expect int
+	}{
+		{
+			desc:   "it should return 2",
+			people: []int{5, 1, 4, 2},
+			limit:  6,
+			expect: 2,
+		}, {
+			desc:   "it should return 4",
+			people: []int{1, 3, 2, 3, 2},
+			limit:  3,
+			expect: 4,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			actual := numRescueBoats(tC.people, tC.limit)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}
+
+func TestCalPoints(t *testing.T) {
+	testCases := []struct {
+		desc   string
+		ops    []string
+		expect int
+	}{
+		{
+			desc:   "it should return 18",
+			ops:    []string{"1", "2", "+", "C", "5", "D"},
+			expect: 18,
+		}, {
+			desc:   "it should return 15",
+			ops:    []string{"5", "D", "+", "C"},
+			expect: 15,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			actual := calPoints(tC.ops)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}
+
+func TestSimplifyPath(t *testing.T) {
+	testCases := []struct {
+		desc   string
+		path   string
+		expect string
+	}{
+		{
+			desc:   "it should return '/neetcode/practice/courses'",
+			path:   "/neetcode/practice//...///../courses",
+			expect: "/neetcode/practice/courses",
+		}, {
+			desc:   "it should return '/'",
+			path:   "/..//",
+			expect: "/",
+		}, {
+			desc:   "it should return '/..//_home/a/b/..///'",
+			path:   "/neetcode/practice//...///../courses",
+			expect: "/_home/a",
+		}, {
+			desc:   "it should return '/c'",
+			path:   "/a/./b/../../c/",
+			expect: "/c",
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			actual := simplifyPath(tC.path)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}
+
+func TestDecodeString(t *testing.T) {
+	testCases := []struct {
+		desc          string
+		encodedString string
+		decodedString string
+	}{
+		{
+			desc:          "it should return abbbabbbc",
+			encodedString: "2[a3[b]]c",
+			decodedString: "abbbabbbc",
+		}, {
+			desc:          "it should return kaaaaaaaaaaab",
+			encodedString: "k11[a]b",
+			decodedString: "kaaaaaaaaaaab",
+		}, {
+			desc:          "it should return axbzzzcccc",
+			encodedString: "axb3[z]4[c]",
+			decodedString: "axbzzzcccc",
+		}, {
+			desc:          "it should return abccdddx",
+			encodedString: "ab2[c]3[d]1[x]",
+			decodedString: "abccdddx",
+		}, {
+			desc:          "it should return aaabcbc",
+			encodedString: "3[a]2[bc]",
+			decodedString: "aaabcbc",
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			actual := decodeString(tC.encodedString)
+			require.Equal(t, tC.decodedString, actual)
+		})
+	}
+}
