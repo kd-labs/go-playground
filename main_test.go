@@ -820,3 +820,80 @@ func TestValidPalindrome(t *testing.T) {
 		})
 	}
 }
+
+func TestMergeAlternately(t *testing.T) {
+	testCases := []struct {
+		name   string
+		word1  string
+		word2  string
+		expect string
+	}{
+		{
+			name:   "it should return axbycz",
+			word1:  "abc",
+			word2:  "xyz",
+			expect: "axbycz",
+		}, {
+			name:   "it should return aabbbxxc",
+			word1:  "ab",
+			word2:  "abbxxc",
+			expect: "aabbbxxc",
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.name, func(t *testing.T) {
+			actual := mergeAlternately(tC.word1, tC.word2)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}
+
+func TestMerge(t *testing.T) {
+	testCases := []struct {
+		name   string
+		nums1  []int
+		m      int
+		nums2  []int
+		n      int
+		expect []int
+	}{
+		{
+			name:   "it should return [1,2,10,20,20,40]",
+			nums1:  []int{10, 20, 20, 40, 0, 0},
+			m:      4,
+			nums2:  []int{1, 2},
+			n:      2,
+			expect: []int{1, 2, 10, 20, 20, 40},
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.name, func(t *testing.T) {
+			merge(tC.nums1, tC.m, tC.nums2, tC.n)
+			require.Equal(t, tC.expect, tC.nums1)
+		})
+	}
+}
+
+func TestRemoveDuplicates(t *testing.T) {
+	testCases := []struct {
+		name   string
+		nums   []int
+		expect int
+	}{
+		{
+			name:   "it should return 4",
+			nums:   []int{1, 1, 2, 3, 4},
+			expect: 4,
+		}, {
+			name:   "it should return 3",
+			nums:   []int{2, 10, 10, 30, 30, 30},
+			expect: 3,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.name, func(t *testing.T) {
+			actual := removeDuplicates(tC.nums)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}

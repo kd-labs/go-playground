@@ -736,3 +736,82 @@ func (p PalindromeChecker) validPalindrome(s string) bool {
 		return p.validPalindrome(s[1:]) || p.validPalindrome(s[:len(s)-1])
 	}
 }
+
+func mergeAlternately(word1 string, word2 string) string {
+	i := 0
+	j := 0
+	sb := strings.Builder{}
+
+	for i < len(word1) && j < len(word2) {
+		sb.WriteByte(word1[i])
+		sb.WriteByte(word2[j])
+		i++
+		j++
+	}
+
+	for i < len(word1) {
+		sb.WriteByte(word1[i])
+		i++
+	}
+
+	for j < len(word2) {
+		sb.WriteByte(word2[j])
+		j++
+	}
+
+	return sb.String()
+}
+
+func merge(nums1 []int, m int, nums2 []int, n int) {
+	tmp := make([]int, m)
+
+	for i := range m {
+		tmp[i] = nums1[i]
+	}
+
+	k := 0
+	p := 0
+	j := 0
+
+	for k < m && p < n {
+		if tmp[k] < nums2[p] {
+			nums1[j] = tmp[k]
+			k++
+		} else {
+			nums1[j] = nums2[p]
+			p++
+		}
+		j++
+	}
+
+	for k < m {
+		nums1[j] = tmp[k]
+		j++
+		k++
+	}
+
+	for p < n {
+		nums1[j] = nums2[p]
+		j++
+		p++
+	}
+}
+
+func removeDuplicates(nums []int) int {
+	if len(nums) == 1 {
+		return 1
+	}
+
+	uniqueIdx := 0
+	i := 1
+
+	for i < len(nums) {
+		if nums[i] != nums[i-1] {
+			uniqueIdx++
+			nums[uniqueIdx] = nums[i]
+		}
+		i++
+	}
+
+	return uniqueIdx + 1
+}
