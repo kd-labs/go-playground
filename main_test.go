@@ -1258,3 +1258,198 @@ func TestCarFleet(t *testing.T) {
 		})
 	}
 }
+
+func TestLargestRectangleArea(t *testing.T) {
+	testCases := []struct {
+		desc    string
+		heights []int
+		expect  int
+	}{
+		{
+			desc:    "it should return 8",
+			heights: []int{7, 1, 7, 2, 2, 4},
+			expect:  8,
+		}, {
+			desc:    "it should return 7",
+			heights: []int{1, 3, 7},
+			expect:  7,
+		}, {
+			desc:    "it should return 0",
+			heights: []int{0, 0},
+			expect:  0,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			actual := largestRectangleArea(tC.heights)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}
+
+func TestFrequencyStack(t *testing.T) {
+	// TC1
+	freqStack := NewFreqStack()
+
+	freqStack.Push(5)
+	freqStack.Push(7)
+	freqStack.Push(5)
+	freqStack.Push(7)
+	freqStack.Push(4)
+	freqStack.Push(5)
+
+	require.Equal(t, 5, freqStack.Pop())
+	require.Equal(t, 7, freqStack.Pop())
+	require.Equal(t, 5, freqStack.Pop())
+	require.Equal(t, 4, freqStack.Pop())
+
+	// TC2
+	freqStack = NewFreqStack()
+
+	freqStack.Push(4)
+	freqStack.Push(0)
+	require.Equal(t, 0, freqStack.Pop())
+	freqStack.Push(9)
+	freqStack.Push(3)
+	freqStack.Push(9)
+	require.Equal(t, 9, freqStack.Pop())
+	require.Equal(t, 3, freqStack.Pop())
+	require.Equal(t, 9, freqStack.Pop())
+}
+
+func TestBinarySearch(t *testing.T) {
+	testCases := []struct {
+		desc   string
+		nums   []int
+		target int
+		expect int
+	}{
+		{
+			desc:   "it should return 3",
+			nums:   []int{-1, 0, 2, 4, 6, 8},
+			target: 4,
+			expect: 3,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			actual := binarySearch(tC.nums, tC.target)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}
+
+func TestSearchInsert(t *testing.T) {
+	testCases := []struct {
+		desc   string
+		nums   []int
+		target int
+		expect int
+	}{
+		{
+			desc:   "it should return 4",
+			nums:   []int{-1, 0, 2, 4, 6, 8},
+			target: 5,
+			expect: 4,
+		}, {
+			desc:   "it should return 6",
+			nums:   []int{-1, 0, 2, 4, 6, 8},
+			target: 10,
+			expect: 6,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			actual := searchInsert(tC.nums, tC.target)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}
+
+func TestMySqrt(t *testing.T) {
+	testCases := []struct {
+		desc   string
+		x      int
+		expect int
+	}{
+		{
+			desc:   "it should return 3",
+			x:      9,
+			expect: 3,
+		}, {
+			desc:   "it should return 3",
+			x:      12,
+			expect: 3,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			actual := mySqrt(tC.x)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}
+
+func TestMinEatingSpeed(t *testing.T) {
+	testCases := []struct {
+		desc   string
+		piles  []int
+		target int
+		expect int
+	}{
+		{
+			desc:   "it should return 2",
+			piles:  []int{1, 4, 3, 2},
+			target: 9,
+			expect: 2,
+		}, {
+			desc:   "it should return 25",
+			piles:  []int{25, 10, 23, 4},
+			target: 4,
+			expect: 25,
+		}, {
+			desc:   "it should return 23",
+			piles:  []int{30, 11, 23, 4, 20},
+			target: 6,
+			expect: 23,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			actual := minEatingSpeed(tC.piles, tC.target)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}
+
+func TestShipWithinDays(t *testing.T) {
+	testCases := []struct {
+		desc    string
+		weights []int
+		days    int
+		expect  int
+	}{
+		{
+			desc:    "it should return 15",
+			weights: []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+			days:    5,
+			expect:  15,
+		}, {
+			desc:    "it should return 6",
+			weights: []int{3, 2, 2, 4, 1, 4},
+			days:    3,
+			expect:  6,
+		}, {
+			desc:    "it should return 3",
+			weights: []int{1, 2, 3, 1, 1},
+			days:    4,
+			expect:  3,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			actual := shipWithinDays(tC.weights, tC.days)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}

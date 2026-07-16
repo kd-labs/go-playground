@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"math"
 	"slices"
 	"sort"
 	"strconv"
@@ -1367,4 +1368,248 @@ func carFleet(target int, position []int, speed []int) int {
 	}
 
 	return stk.tos + 1
+}
+
+func largestRectangleArea(heights []int) int {
+	var maxArea int
+
+	type pair struct {
+		idx    int
+		height int
+	}
+
+	stk := NewStack[pair]()
+
+	for i, h := range heights {
+		if stk.isEmpty() {
+			stk.Push(pair{i, h})
+			continue
+		}
+
+		p := pair{-1, -1}
+		for !stk.isEmpty() && stk.Peek().height >= h {
+			// pop from Stack
+			p = stk.Pop()
+
+			// calculate area
+			tmp := p.height * (i - p.idx)
+			// compare with maxArea
+			maxArea = max(maxArea, tmp)
+		}
+		// push current height with idx to which extends back
+		if p.idx > -1 {
+			stk.Push(pair{p.idx, h})
+		} else {
+			stk.Push(pair{i, h})
+		}
+	}
+
+	// cal area remaining in stack
+	s := len(heights)
+	for !stk.isEmpty() {
+		p := stk.Pop()
+		tmp := p.height * (s - p.idx)
+		maxArea = max(maxArea, tmp)
+	}
+
+	return maxArea
+}
+
+type FreqStack struct {
+	arr          []int
+	tos          int
+	numFreqCount map[int]int
+	maxCount     int
+}
+
+func NewFreqStack() FreqStack {
+	return FreqStack{
+		arr:          make([]int, 20000),
+		tos:          -1,
+		numFreqCount: make(map[int]int),
+	}
+}
+
+func (this *FreqStack) Push(val int) {
+	this.tos++
+	this.arr[this.tos] = val
+	this.numFreqCount[val]++
+	this.maxCount = max(this.maxCount, this.numFreqCount[val])
+}
+
+func (this *FreqStack) Pop() int {
+	k := []int{}
+	for n, c := range this.numFreqCount {
+		if c == this.maxCount {
+			k = append(k, n)
+		}
+	}
+
+	var i, res int
+	if len(k) == 1 {
+
+		// adjust the internal storage
+		for i = this.tos; i >= 0; i-- {
+			if this.arr[i] == k[0] {
+				break
+			}
+		}
+		for k := i + 1; k <= this.tos; k++ {
+			this.arr[i] = this.arr[k]
+			i++
+		}
+
+		this.tos--
+		this.maxCount--
+		res = k[0]
+	} else {
+	outer:
+		for i = this.tos; i >= 0; i-- {
+			for _, l := range k {
+				if this.arr[i] == l {
+					res = l
+					break outer
+				}
+			}
+		}
+
+		for d := i + 1; d <= this.tos; d++ {
+			this.arr[i] = this.arr[d]
+			i++
+		}
+
+		this.tos--
+	}
+	this.numFreqCount[res]--
+
+	return res
+}
+
+func binarySearch(nums []int, target int) int {
+	if len(nums) == 1 && nums[0] == target {
+		return 0
+	}
+
+	lo, hi := 0, len(nums)-1
+
+	var mid int
+	for lo <= hi {
+		mid = lo + (hi-lo)/2
+
+		if nums[mid] == target {
+			return mid
+		} else if nums[mid] > target {
+			hi = mid - 1
+		} else {
+			lo = mid + 1
+		}
+	}
+
+	return -1
+}
+
+func searchInsert(nums []int, target int) int {
+	lo, hi := 0, len(nums)-1
+
+	for lo <= hi {
+		mid := lo + (hi-lo)/2
+
+		if nums[mid] == target {
+			return mid
+		} else if nums[mid] < target {
+			lo = mid + 1
+		} else {
+			hi = mid - 1
+		}
+	}
+	return lo
+}
+
+func mySqrt(x int) int {
+	var res int
+
+	lo, hi := 0, x
+
+	for lo <= hi {
+		mid := lo + (hi-lo)/2
+
+		if mid*mid <= x {
+			res = mid
+			lo = mid + 1
+		} else {
+			hi = mid - 1
+		}
+	}
+
+	return res
+}
+
+func minEatingSpeed(piles []int, h int) int {
+	lo, hi := 1, getMax(piles)
+
+	ans := hi
+	for lo <= hi {
+
+		rate := lo + (hi-lo)/2
+
+		var totalTime int
+		for _, pile := range piles {
+			totalTime += int(math.Ceil(float64(pile) / float64(rate)))
+		}
+
+		if totalTime <= h {
+			ans = rate
+			hi = rate - 1
+		} else {
+			lo = rate + 1
+		}
+	}
+	return ans
+}
+
+func getMax(arr []int) int {
+	var maxEl int
+	for _, n := range arr {
+		maxEl = max(maxEl, n)
+	}
+
+	return maxEl
+}
+
+func shipWithinDays(weights []int, days int) int {
+	lo := 0
+
+	var hi int
+	for _, wt := range weights {
+		// maximum ship capacity is sum of all weigghts to carry all cargo together in one day
+		hi += wt
+		// creative way to set the lower bound of search range to max cargo weight
+		// because, need minimum ship capacity to carry the heaviest cargo.
+		if wt > lo {
+			lo = wt
+		}
+	}
+
+	minWt := hi
+	for lo <= hi {
+		cap := lo + (hi-lo)/2
+		d := 1
+		var cmltvWt int
+		for _, wt := range weights {
+			cmltvWt += wt
+			if cmltvWt > cap {
+				d++
+				cmltvWt = wt
+			}
+		}
+
+		if d <= days {
+			minWt = cap
+			hi = cap - 1
+		} else {
+			lo = cap + 1
+		}
+	}
+
+	return minWt
 }
