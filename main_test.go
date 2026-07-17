@@ -1453,3 +1453,45 @@ func TestShipWithinDays(t *testing.T) {
 		})
 	}
 }
+
+func TestSearchRange(t *testing.T) {
+	testCases := []struct {
+		desc   string
+		nums   []int
+		target int
+		expect []int
+	}{
+		{
+			desc:   "it should return [3,4]",
+			nums:   []int{5, 7, 7, 8, 8, 10},
+			target: 8,
+			expect: []int{3, 4},
+		}, {
+			desc:   "it should return [-1,-1]",
+			nums:   []int{5, 7, 7, 8, 8, 10},
+			target: 6,
+			expect: []int{-1, -1},
+		}, {
+			desc:   "it should return [-1,-1]",
+			nums:   []int{},
+			target: 0,
+			expect: []int{-1, -1},
+		}, {
+			desc:   "it should return [0,0]",
+			nums:   []int{1},
+			target: 1,
+			expect: []int{0, 0},
+		}, {
+			desc:   "it should return [0,2]",
+			nums:   []int{3, 3, 3},
+			target: 3,
+			expect: []int{0, 2},
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			actual := searchRange(tC.nums, tC.target)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}

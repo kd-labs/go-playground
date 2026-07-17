@@ -1613,3 +1613,41 @@ func shipWithinDays(weights []int, days int) int {
 
 	return minWt
 }
+
+func searchRange(nums []int, target int) []int {
+	defaultRes := []int{-1, -1}
+
+	if len(nums) == 0 {
+		return defaultRes
+	}
+
+	lo, hi := 0, len(nums)-1
+
+	for lo <= hi {
+		mid := lo + (hi-lo)/2
+
+		if nums[mid] == target {
+			leftBound, rightBound := mid, mid
+			// find left boundary
+			for i := mid; i >= 0; i-- {
+				if nums[i] == target {
+					leftBound = i
+				}
+			}
+
+			// find right bound
+			for i := mid; i < len(nums); i++ {
+				if nums[i] == target {
+					rightBound = i
+				}
+			}
+
+			return []int{leftBound, rightBound}
+		} else if nums[mid] < target {
+			lo = mid + 1
+		} else {
+			hi = mid - 1
+		}
+	}
+	return defaultRes
+}
