@@ -1495,3 +1495,31 @@ func TestSearchRange(t *testing.T) {
 		})
 	}
 }
+
+func TestFindMin(t *testing.T) {
+	testCases := []struct {
+		desc   string
+		nums   []int
+		expect int
+	}{
+		{
+			desc:   "it should return 1",
+			nums:   []int{3, 4, 5, 6, 1, 2},
+			expect: 1,
+		}, {
+			desc:   "it should return 0",
+			nums:   []int{4, 5, 0, 1, 2, 3},
+			expect: 0,
+		}, {
+			desc:   "it should return 1",
+			nums:   []int{4, 5, 1, 2},
+			expect: 1,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			actual := findMin(tC.nums)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}
