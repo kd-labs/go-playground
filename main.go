@@ -1669,3 +1669,38 @@ func findMin(nums []int) int {
 
 	return minN
 }
+
+func search(nums []int, target int) int {
+	minIndx := findMinIdx(nums)
+
+	if nums[minIndx] == target {
+		return minIndx
+	} else if nums[minIndx] < target && target <= nums[len(nums)-1] {
+		res := binarySearch(nums[minIndx+1:], target)
+		if res == -1 {
+			return res
+		}
+		return minIndx + 1 + res
+	} else {
+		return binarySearch(nums[:minIndx], target)
+	}
+}
+
+func findMinIdx(nums []int) int {
+	lo, hi := 0, len(nums)-1
+
+	minIndx := len(nums)
+	for lo <= hi {
+		mid := lo + (hi-lo)/2
+
+		if nums[mid] <= nums[hi] {
+			if minIndx == len(nums) || nums[mid] < nums[minIndx] {
+				minIndx = mid
+			}
+			hi = mid - 1
+		} else {
+			lo = mid + 1
+		}
+	}
+	return minIndx
+}

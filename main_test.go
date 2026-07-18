@@ -1523,3 +1523,89 @@ func TestFindMin(t *testing.T) {
 		})
 	}
 }
+
+func TestSearch(t *testing.T) {
+	testCases := []struct {
+		desc   string
+		nums   []int
+		target int
+		expect int
+	}{
+		{
+			desc:   "it should return 4",
+			nums:   []int{4, 5, 6, 7, 0, 1, 2},
+			target: 0,
+			expect: 4,
+		},
+		{
+			desc:   "it should return -1",
+			nums:   []int{4, 5, 6, 7, 0, 1, 2},
+			target: 3,
+			expect: -1,
+		},
+		{
+			desc:   "it should return -1",
+			nums:   []int{1},
+			target: 0,
+			expect: -1,
+		},
+		{
+			desc:   "it should return 4",
+			nums:   []int{3, 4, 5, 6, 1, 2},
+			target: 1,
+			expect: 4,
+		},
+		{
+			desc:   "it should return -1",
+			nums:   []int{3, 5, 6, 0, 1, 2},
+			target: 4,
+			expect: -1,
+		},
+		{
+			desc:   "it should return 1",
+			nums:   []int{3, 4, 5, 6, 0, 1, 2},
+			target: 4,
+			expect: 1,
+		},
+		{
+			desc:   "it should return 1",
+			nums:   []int{1, 3},
+			target: 3,
+			expect: 1,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			actual := search(tC.nums, tC.target)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}
+
+func TestMinIdx(t *testing.T) {
+	testCases := []struct {
+		desc   string
+		nums   []int
+		expect int
+	}{
+		{
+			desc:   "it should return min idx 2",
+			nums:   []int{6, 7, 0, 1, 2, 3, 4},
+			expect: 2,
+		}, {
+			desc:   "it should return min idx 0",
+			nums:   []int{1, 3},
+			expect: 0,
+		}, {
+			desc:   "it should return min idx 3",
+			nums:   []int{5, 6, 7, 0, 1, 2, 3},
+			expect: 3,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			actual := findMinIdx(tC.nums)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}
