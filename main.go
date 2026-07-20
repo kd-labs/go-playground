@@ -1670,7 +1670,7 @@ func findMin(nums []int) int {
 	return minN
 }
 
-func search(nums []int, target int) int {
+func searchInSortedArray(nums []int, target int) int {
 	minIndx := findMinIdx(nums)
 
 	if nums[minIndx] == target {
@@ -1703,4 +1703,33 @@ func findMinIdx(nums []int) int {
 		}
 	}
 	return minIndx
+}
+
+func searchInRotatedSortedArrayII(nums []int, target int) bool {
+	lo, hi := 0, len(nums)-1
+
+	for lo <= hi {
+		mid := lo + (hi-lo)/2
+
+		if nums[mid] == target {
+			return true
+		}
+
+		if nums[lo] < nums[mid] {
+			if nums[lo] <= target && target < nums[mid] {
+				hi = mid - 1
+			} else {
+				lo = mid + 1
+			}
+		} else if nums[lo] > nums[mid] {
+			if nums[mid] < target && target <= nums[hi] {
+				lo = mid + 1
+			} else {
+				hi = mid - 1
+			}
+		} else {
+			lo += 1
+		}
+	}
+	return false
 }

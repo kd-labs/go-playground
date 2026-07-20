@@ -1576,7 +1576,7 @@ func TestSearch(t *testing.T) {
 	}
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
-			actual := search(tC.nums, tC.target)
+			actual := searchInSortedArray(tC.nums, tC.target)
 			require.Equal(t, tC.expect, actual)
 		})
 	}
