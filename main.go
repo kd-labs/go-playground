@@ -1733,3 +1733,35 @@ func searchInRotatedSortedArrayII(nums []int, target int) bool {
 	}
 	return false
 }
+
+func singleNonDuplicate(nums []int) int {
+	// recursive flavour
+
+	if len(nums) == 0 {
+		return -1
+	}
+
+	if len(nums) == 1 {
+		return nums[0]
+	}
+
+	lo, hi := 0, len(nums)-1
+	mid := lo + (hi-lo)/2
+
+	res := -1
+	if mid > 0 && nums[mid-1] == nums[mid] {
+		res = singleNonDuplicate(nums[:mid-1])
+		if res == -1 {
+			res = singleNonDuplicate(nums[mid+1:])
+		}
+	} else if mid < len(nums)-1 && nums[mid] == nums[mid+1] {
+		res = singleNonDuplicate(nums[:mid])
+		if res == -1 {
+			res = singleNonDuplicate(nums[mid+2:])
+		}
+	} else {
+		return nums[mid]
+	}
+
+	return res
+}
