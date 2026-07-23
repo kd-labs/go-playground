@@ -1637,3 +1637,31 @@ func TestSingleNonDuplicate(t *testing.T) {
 		})
 	}
 }
+
+func TestFindKRotation(t *testing.T) {
+	testCases := []struct {
+		desc   string
+		nums   []int
+		expect int
+	}{
+		{
+			desc:   "it should return 2",
+			nums:   []int{6, 9, 2, 4},
+			expect: 2,
+		}, {
+			desc:   "it should return 1",
+			nums:   []int{5, 1, 2, 3, 4},
+			expect: 1,
+		}, {
+			desc:   "it should return 0",
+			nums:   []int{1, 2},
+			expect: 0,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			actual := findKRotation(tC.nums)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}
