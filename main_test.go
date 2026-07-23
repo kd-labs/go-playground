@@ -1665,3 +1665,45 @@ func TestFindKRotation(t *testing.T) {
 		})
 	}
 }
+
+func TestFindKthPositive(t *testing.T) {
+	testCases := []struct {
+		desc   string
+		arr    []int
+		k      int
+		expect int
+	}{
+		{
+			desc:   "it should return 9",
+			arr:    []int{2, 3, 4, 7, 11},
+			k:      5,
+			expect: 9,
+		}, {
+			desc:   "it should return 6",
+			arr:    []int{1, 2, 3, 4},
+			k:      2,
+			expect: 6,
+		}, {
+			desc:   "it should return 1",
+			arr:    []int{2},
+			k:      1,
+			expect: 1,
+		}, {
+			desc:   "it should return 14",
+			arr:    []int{1, 10, 21, 22, 25},
+			k:      12,
+			expect: 14,
+		}, {
+			desc:   "it should return 24",
+			arr:    []int{1, 7, 11, 14, 29, 31, 40, 44},
+			k:      20,
+			expect: 24,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			actual := findKthPositive(tC.arr, tC.k)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}
