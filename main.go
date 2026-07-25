@@ -1783,3 +1783,25 @@ func findKRotation(nums []int) int {
 	}
 	return res
 }
+
+func findKthPositive(arr []int, k int) int {
+	lo, hi := 0, len(arr)-1
+
+	var missing int
+	for lo <= hi {
+		mid := lo + (hi-lo)/2
+
+		desiredN := mid + 1
+		givenN := arr[mid]
+
+		missing = givenN - desiredN
+
+		if missing < k {
+			lo = mid + 1
+		} else {
+			hi = mid - 1
+		}
+	}
+
+	return lo + k
+}
