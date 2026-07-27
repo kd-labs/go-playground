@@ -1717,3 +1717,35 @@ func TestFindKthPositive(t *testing.T) {
 		})
 	}
 }
+
+func TestMissingElement(t *testing.T) {
+	testCases := []struct {
+		desc   string
+		nums   []int
+		k      int
+		expect int
+	}{
+		{
+			desc:   "it should return 5",
+			nums:   []int{4, 7, 9, 10},
+			k:      1,
+			expect: 5,
+		}, {
+			desc:   "it should return 8",
+			nums:   []int{4, 7, 9, 10},
+			k:      3,
+			expect: 8,
+		}, {
+			desc:   "it should return 6",
+			nums:   []int{1, 2, 4},
+			k:      3,
+			expect: 6,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			actual := missingElement(tC.nums, tC.k)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}

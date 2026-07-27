@@ -1805,3 +1805,24 @@ func findKthPositive(arr []int, k int) int {
 
 	return lo + k
 }
+
+func missingElement(nums []int, k int) int {
+	offset := nums[0]
+
+	lo, hi := 0, len(nums)-1
+
+	for lo <= hi {
+		mid := lo + (hi-lo)/2
+
+		desired := mid + offset
+		given := nums[mid]
+
+		if given-desired < k {
+			lo = mid + 1
+		} else {
+			hi = mid - 1
+		}
+	}
+
+	return offset + k + lo - 1
+}
