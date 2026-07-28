@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	"math"
 	"slices"
 	"sort"
 	"strconv"
@@ -1544,29 +1543,6 @@ func mySqrt(x int) int {
 	return res
 }
 
-func minEatingSpeed(piles []int, h int) int {
-	lo, hi := 1, getMax(piles)
-
-	ans := hi
-	for lo <= hi {
-
-		rate := lo + (hi-lo)/2
-
-		var totalTime int
-		for _, pile := range piles {
-			totalTime += int(math.Ceil(float64(pile) / float64(rate)))
-		}
-
-		if totalTime <= h {
-			ans = rate
-			hi = rate - 1
-		} else {
-			lo = rate + 1
-		}
-	}
-	return ans
-}
-
 func getMax(arr []int) int {
 	var maxEl int
 	for _, n := range arr {
@@ -1850,4 +1826,38 @@ func minimumTime(time []int, totalTrips int) int64 {
 		}
 	}
 	return int64(res)
+}
+
+func minEatingSpeed(piles []int, h int) int {
+	maxspeed := 1
+
+	// find the minspeed i.e. lo and maxspeed i.e. hi
+	for _, b := range piles {
+		maxspeed = max(maxspeed, b)
+	}
+
+	lo, hi := 1, maxspeed
+
+	var res int
+	for lo <= hi {
+		mid := lo + (hi-lo)/2
+
+		var time int
+		for _, b := range piles {
+			if b%mid == 0 {
+				time += b / mid
+			} else {
+				time += (b / mid) + 1
+			}
+		}
+
+		if time <= h {
+			hi = mid - 1
+			res = mid
+		} else {
+			lo = mid + 1
+		}
+
+	}
+	return res
 }

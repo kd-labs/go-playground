@@ -1402,16 +1402,24 @@ func TestMinEatingSpeed(t *testing.T) {
 			piles:  []int{1, 4, 3, 2},
 			target: 9,
 			expect: 2,
-		}, {
+		},
+		{
 			desc:   "it should return 25",
 			piles:  []int{25, 10, 23, 4},
 			target: 4,
 			expect: 25,
-		}, {
+		},
+		{
 			desc:   "it should return 23",
 			piles:  []int{30, 11, 23, 4, 20},
 			target: 6,
 			expect: 23,
+		},
+		{
+			desc:   "it should return 2",
+			piles:  []int{312884470},
+			target: 312884469,
+			expect: 2,
 		},
 	}
 	for _, tC := range testCases {
