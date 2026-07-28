@@ -1749,3 +1749,35 @@ func TestMissingElement(t *testing.T) {
 		})
 	}
 }
+
+func TestMinimumTime(t *testing.T) {
+	testCases := []struct {
+		desc       string
+		time       []int
+		totalTrips int
+		expect     int64
+	}{
+		{
+			desc:       "it should return 3",
+			time:       []int{1, 2, 3},
+			totalTrips: 5,
+			expect:     int64(3),
+		}, {
+			desc:       "it should return 2",
+			time:       []int{2},
+			totalTrips: 1,
+			expect:     int64(2),
+		}, {
+			desc:       "it should return 5",
+			time:       []int{9, 3, 10, 5},
+			totalTrips: 2,
+			expect:     int64(5),
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			actual := minimumTime(tC.time, tC.totalTrips)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}

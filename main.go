@@ -1826,3 +1826,28 @@ func missingElement(nums []int, k int) int {
 
 	return offset + k + lo - 1
 }
+
+func minimumTime(time []int, totalTrips int) int64 {
+	// calculate time taken by fastest bus to complete totalTrips
+	minTime := slices.Min(time)
+
+	lo, hi := 1, minTime*totalTrips
+
+	var res int
+	for lo <= hi {
+		mid := lo + (hi-lo)/2
+
+		var trips int
+		for _, t := range time {
+			trips += mid / t
+		}
+
+		if trips >= totalTrips {
+			hi = mid - 1
+			res = mid
+		} else {
+			lo = mid + 1
+		}
+	}
+	return int64(res)
+}
