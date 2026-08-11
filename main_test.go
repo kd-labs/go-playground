@@ -1789,3 +1789,33 @@ func TestMinimumTime(t *testing.T) {
 		})
 	}
 }
+
+func TestSuccessfulPairs(t *testing.T) {
+	testCases := []struct {
+		desc    string
+		spells  []int
+		potions []int
+		sucess  int
+		expect  []int
+	}{
+		{
+			desc:    "it should return [4,0,3]",
+			spells:  []int{5, 1, 3},
+			potions: []int{1, 2, 3, 4, 5},
+			sucess:  7,
+			expect:  []int{4, 0, 3},
+		}, {
+			desc:    "it should return [2, 0, 2]",
+			spells:  []int{3, 1, 2},
+			potions: []int{8, 5, 10},
+			sucess:  16,
+			expect:  []int{2, 0, 2},
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			actual := successfulPairs(tC.spells, tC.potions, tC.sucess)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}

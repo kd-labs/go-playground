@@ -1861,3 +1861,32 @@ func minEatingSpeed(piles []int, h int) int {
 	}
 	return res
 }
+
+func successfulPairs(spells []int, potions []int, success int64) []int {
+	pairs := make([]int, len(spells))
+	sort.Ints(potions)
+	potionsLen := len(potions)
+
+	for i, spell := range spells {
+
+		lo, hi := 0, potionsLen-1
+
+		res := -1
+		for lo <= hi {
+			mid := lo + (hi-lo)/2
+
+			if int64(potions[mid]*spell) >= success {
+				res = mid
+				hi = mid - 1
+			} else {
+				lo = mid + 1
+			}
+		}
+		if res == -1 {
+			pairs[i] = 0
+		} else {
+			pairs[i] = potionsLen - res
+		}
+	}
+	return pairs
+}
