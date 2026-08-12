@@ -1890,3 +1890,48 @@ func successfulPairs(spells []int, potions []int, success int64) []int {
 	}
 	return pairs
 }
+
+func minimizeArrayValue(nums []int) int {
+	lo := nums[0]
+	hi := -1
+	for _, n := range nums {
+		if n > hi {
+			hi = n
+		}
+	}
+
+	if lo == hi {
+		return lo
+	}
+
+	var res int
+	for lo <= hi {
+		minimalMax := lo + (hi-lo)/2
+
+		if isValid(nums, minimalMax) {
+			res = minimalMax
+			hi = minimalMax - 1
+		} else {
+			lo = minimalMax + 1
+		}
+	}
+	return res
+}
+
+func isValid(nums []int, sum int) bool {
+	n := make([]int, len(nums))
+	copy(n, nums)
+	if n[0] > sum {
+		return false
+	}
+
+	for i := len(n) - 1; i > 0; i-- {
+		if n[i]-sum > 0 {
+			diff := n[i] - sum
+			n[i] = sum
+			n[i-1] += diff
+		}
+	}
+
+	return n[0] <= sum
+}
