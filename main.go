@@ -1935,3 +1935,19 @@ func isValid(nums []int, sum int) bool {
 
 	return n[0] <= sum
 }
+
+func peakIndexInMountainArray(arr []int) int {
+	lo, hi := 0, len(arr)-1
+
+	var mid int
+	for lo < hi {
+		mid = lo + (hi-lo)/2
+
+		if arr[mid] < arr[mid+1] {
+			lo = mid + 1
+		} else if arr[mid] > arr[mid+1] {
+			hi = mid
+		}
+	}
+	return lo
+}

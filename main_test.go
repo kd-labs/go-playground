@@ -1847,3 +1847,35 @@ func TestMinimizeArrayValue(t *testing.T) {
 		})
 	}
 }
+
+func TestPeakIndexInMountainArray(t *testing.T) {
+	testCases := []struct {
+		desc   string
+		arr    []int
+		expect int
+	}{
+		{
+			desc:   "it should return 1",
+			arr:    []int{0, 1, 0},
+			expect: 1,
+		}, {
+			desc:   "it should return 1",
+			arr:    []int{0, 2, 1, 0},
+			expect: 1,
+		}, {
+			desc:   "it should return 1",
+			arr:    []int{0, 10, 5, 2},
+			expect: 1,
+		}, {
+			desc:   "it should return 1",
+			arr:    []int{3, 5, 3, 2, 0},
+			expect: 1,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			actual := peakIndexInMountainArray(tC.arr)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}
