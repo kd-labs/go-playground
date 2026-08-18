@@ -1879,3 +1879,40 @@ func TestPeakIndexInMountainArray(t *testing.T) {
 		})
 	}
 }
+
+func TestMinSpeedOnTime(t *testing.T) {
+	testCases := []struct {
+		desc   string
+		dist   []int
+		hour   float64
+		expect int
+	}{
+		{
+			desc:   "it should return 1",
+			dist:   []int{1, 3, 2},
+			hour:   6,
+			expect: 1,
+		}, {
+			desc:   "it should return 3",
+			dist:   []int{1, 3, 2},
+			hour:   2.7,
+			expect: 3,
+		}, {
+			desc:   "it should return -1",
+			dist:   []int{1, 3, 2},
+			hour:   1.9,
+			expect: -1,
+		}, {
+			desc:   "it should return 10000000",
+			dist:   []int{1, 1, 100000},
+			hour:   2.01,
+			expect: 10000000,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			actual := minSpeedOnTime(tC.dist, tC.hour)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}

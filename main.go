@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"math"
 	"slices"
 	"sort"
 	"strconv"
@@ -1950,4 +1951,29 @@ func peakIndexInMountainArray(arr []int) int {
 		}
 	}
 	return lo
+}
+
+func minSpeedOnTime(dist []int, hour float64) int {
+	res := -1
+	n := len(dist)
+	lo, hi := 1, 10000000
+
+	for lo <= hi {
+		mid := lo + (hi-lo)/2
+		var time float64
+		var i int
+		for i = 0; i < n-1; i++ {
+			time += math.Ceil(float64(dist[i]) / float64(mid))
+		}
+		time += float64(dist[i]) / float64(mid)
+
+		if time <= hour {
+			res = mid
+			hi = mid - 1
+		} else {
+			lo = mid + 1
+		}
+	}
+
+	return res
 }
