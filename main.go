@@ -1977,3 +1977,23 @@ func minSpeedOnTime(dist []int, hour float64) int {
 
 	return res
 }
+
+func arrangeCoins(n int) int {
+	lo, hi := 1, math.MaxInt
+
+	var res int
+
+	for lo <= hi {
+		mid := lo + (hi-lo)/2
+
+		coinsNeeded := (mid * (mid + 1)) / 2
+
+		if coinsNeeded <= n {
+			res = mid
+			lo = mid + 1
+		} else {
+			hi = mid - 1
+		}
+	}
+	return res
+}

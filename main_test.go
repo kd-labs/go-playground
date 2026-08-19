@@ -1916,3 +1916,27 @@ func TestMinSpeedOnTime(t *testing.T) {
 		})
 	}
 }
+
+func TestArrangeCoins(t *testing.T) {
+	testCases := []struct {
+		desc   string
+		n      int
+		expect int
+	}{
+		{
+			desc:   "it should return 2",
+			n:      5,
+			expect: 2,
+		}, {
+			desc:   "it should return 3",
+			n:      8,
+			expect: 3,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			actual := arrangeCoins(tC.n)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}
