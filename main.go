@@ -1997,3 +1997,42 @@ func arrangeCoins(n int) int {
 	}
 	return res
 }
+
+func minimizeMax(nums []int, p int) int {
+	sort.Ints(nums)
+
+	lo := 0
+	hi := nums[len(nums)-1] - nums[0]
+
+	var res int
+	for lo <= hi {
+		mid := lo + (hi-lo)/2
+
+		if isMaxDiffPossible(nums, mid, p) {
+			res = mid
+			hi = mid - 1
+		} else {
+			lo = mid + 1
+		}
+	}
+	return res
+}
+
+func isMaxDiffPossible(nums []int, maxDiff int, pairs int) bool {
+	var i, c int
+	for i < len(nums)-1 {
+		if abs(nums[i]-nums[i+1]) <= maxDiff {
+			c++
+			i = i + 2
+
+			if c >= pairs {
+				return true
+			}
+
+		} else {
+			i++
+		}
+	}
+
+	return c >= pairs
+}

@@ -1940,3 +1940,30 @@ func TestArrangeCoins(t *testing.T) {
 		})
 	}
 }
+
+func TestMinimizeMax(t *testing.T) {
+	testCases := []struct {
+		desc   string
+		nums   []int
+		p      int
+		expect int
+	}{
+		{
+			desc:   "it should return 1",
+			nums:   []int{10, 1, 2, 7, 1, 3},
+			p:      2,
+			expect: 1,
+		}, {
+			desc:   "it should return 0",
+			nums:   []int{4, 2, 1, 2},
+			p:      1,
+			expect: 0,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			actual := minimizeMax(tC.nums, tC.p)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}
