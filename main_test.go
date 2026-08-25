@@ -1967,3 +1967,35 @@ func TestMinimizeMax(t *testing.T) {
 		})
 	}
 }
+
+func TestMaximumBeauty(t *testing.T) {
+	testCases := []struct {
+		desc    string
+		items   [][]int
+		queries []int
+		expect  []int
+	}{
+		{
+			desc:    "it should return [2,4,5,5,6,6]",
+			items:   [][]int{{1, 2}, {3, 2}, {2, 4}, {5, 6}, {3, 5}},
+			queries: []int{1, 2, 3, 4, 5, 6},
+			expect:  []int{2, 4, 5, 5, 6, 6},
+		}, {
+			desc:    "it should return [4]",
+			items:   [][]int{{1, 2}, {1, 2}, {1, 3}, {1, 4}},
+			queries: []int{1},
+			expect:  []int{4},
+		}, {
+			desc:    "it should return [0]",
+			items:   [][]int{{10, 1000}},
+			queries: []int{5},
+			expect:  []int{0},
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			actual := maximmumBeauty(tC.items, tC.queries)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}
