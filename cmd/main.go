@@ -1,38 +1,22 @@
 package main
 
-func searchRange(nums []int, target int) []int {
-	idx := binarySearch(nums, target, 0, len(nums)-1)
-	if idx == -1 {
-		return []int{-1, -1}
-	}
+import "math"
 
-	first, last := idx, idx
-	res := make([]int, 2)
+func findMin(nums []int) int {
+	res := math.MaxInt
 
-	for first != -1 {
-		res[0] = first
-		first = binarySearch(nums, target, 0, first-1)
-	}
+	lo, hi := 0, len(nums)-1
 
-	for last != -1 {
-		res[1] = last
-		last = binarySearch(nums, target, last+1, len(nums)-1)
-	}
-
-	return res
-}
-
-func binarySearch(nums []int, target, lo, hi int) int {
-	for lo <= hi {
+	for lo < hi {
 		mid := lo + (hi-lo)/2
 
-		if nums[mid] == target {
-			return mid
-		} else if nums[mid] < target {
+		if nums[lo] <= nums[mid] {
+			res = min(res, nums[lo])
 			lo = mid + 1
 		} else {
-			hi = mid - 1
+			hi = mid
 		}
 	}
-	return -1
+
+	return min(res, nums[hi])
 }
