@@ -1,22 +1,24 @@
 package main
 
-import "math"
+func searchMatrix(matrix [][]int, target int) bool {
+	rows := len(matrix)
+	cols := len(matrix[0])
 
-func findMin(nums []int) int {
-	res := math.MaxInt
+	lo, hi := 0, rows*cols-1
 
-	lo, hi := 0, len(nums)-1
-
-	for lo < hi {
+	for lo <= hi {
 		mid := lo + (hi-lo)/2
 
-		if nums[lo] <= nums[mid] {
-			res = min(res, nums[lo])
-			lo = mid + 1
+		r := mid / cols
+		c := mid % cols
+
+		if matrix[r][c] == target {
+			return true
+		} else if matrix[r][c] > target {
+			hi = mid - 1
 		} else {
-			hi = mid
+			lo = mid + 1
 		}
 	}
-
-	return min(res, nums[hi])
+	return false
 }
