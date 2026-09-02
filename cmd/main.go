@@ -1,24 +1,25 @@
 package main
 
-func searchMatrix(matrix [][]int, target int) bool {
-	rows := len(matrix)
-	cols := len(matrix[0])
+func singleNonDuplicate(nums []int) int {
+	lo, hi := 0, len(nums)-1
 
-	lo, hi := 0, rows*cols-1
-
-	for lo <= hi {
+	for lo < hi {
 		mid := lo + (hi-lo)/2
 
-		r := mid / cols
-		c := mid % cols
-
-		if matrix[r][c] == target {
-			return true
-		} else if matrix[r][c] > target {
-			hi = mid - 1
+		if nums[mid] == nums[mid+1] {
+			if (hi-mid+1)%2 != 0 {
+				lo = mid + 2
+			} else {
+				hi = mid - 1
+			}
 		} else {
-			lo = mid + 1
+			if (hi-mid)%2 != 0 {
+				lo = mid + 1
+			} else {
+				hi = mid
+			}
 		}
 	}
-	return false
+
+	return nums[lo]
 }
