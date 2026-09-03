@@ -2037,22 +2037,6 @@ func isMaxDiffPossible(nums []int, maxDiff int, pairs int) bool {
 	return c >= pairs
 }
 
-// func fullBloomFlowers(flowers [][]int, people []int) []int {
-// 	start := make([]int, len(flowers))
-// 	end := make([]int, len(flowers))
-// 	res := make([]int, len(people))
-//
-// 	for i, bloomTime := range flowers {
-// 		start[i] = bloomTime[0]
-// 		end[i] = bloomTime[1]
-// 	}
-//
-// 	sort.Ints(start)
-// 	sort.Ints(end)
-//
-// 	return res
-// }
-
 func maximumBeauty(items [][]int, queries []int) []int {
 	res := make([]int, len(queries))
 	sort.Slice(items, func(i, j int) bool {
@@ -2084,5 +2068,31 @@ func maximumBeauty(items [][]int, queries []int) []int {
 		}
 	}
 
+	return res
+}
+
+func maximumCandies(candies []int, k int64) int {
+	totalCandies := 0
+	for _, c := range candies {
+		totalCandies += c
+	}
+	lo, hi := 1, totalCandies/int(k)
+
+	var res int
+	for lo <= hi {
+		var bags int
+		mid := lo + (hi-lo)/2
+
+		for _, candy := range candies {
+			bags += candy / mid
+		}
+
+		if int64(bags) >= k {
+			res = mid
+			lo = mid + 1
+		} else {
+			hi = mid - 1
+		}
+	}
 	return res
 }

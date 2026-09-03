@@ -1994,7 +1994,34 @@ func TestMaximumBeauty(t *testing.T) {
 	}
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
-			actual := maximmumBeauty(tC.items, tC.queries)
+			actual := maximumBeauty(tC.items, tC.queries)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}
+
+func TestMaximumCandies(t *testing.T) {
+	testCases := []struct {
+		desc    string
+		candies []int
+		k       int64
+		expect  int
+	}{
+		{
+			desc:    "TC0: it should return 5",
+			candies: []int{5, 8, 6},
+			k:       int64(3),
+			expect:  5,
+		}, {
+			desc:    "TC1: it should return 0",
+			candies: []int{2, 5},
+			k:       int64(11),
+			expect:  0,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			actual := maximumCandies(tC.candies, tC.k)
 			require.Equal(t, tC.expect, actual)
 		})
 	}
