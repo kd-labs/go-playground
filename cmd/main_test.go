@@ -6,25 +6,25 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestSingleNonDuplicate(t *testing.T) {
+func TestFindKRotation(t *testing.T) {
 	testCases := []struct {
 		desc   string
 		nums   []int
 		expect int
 	}{
 		{
-			desc:   "TC0: it should return 2",
-			nums:   []int{1, 1, 2, 3, 3, 4, 4, 8, 8},
-			expect: 2,
+			desc:   "TC0: it should return 1",
+			nums:   []int{5, 1, 2, 3, 4},
+			expect: 1,
 		}, {
-			desc:   "TC1: it should return 10",
-			nums:   []int{3, 3, 7, 7, 10, 11, 11},
-			expect: 10,
+			desc:   "TC0: it should return 0",
+			nums:   []int{1, 2, 3, 4, 5},
+			expect: 0,
 		},
 	}
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
-			actual := singleNonDuplicate(tC.nums)
+			actual := findKRotation(tC.nums)
 			require.Equal(t, tC.expect, actual)
 		})
 	}
