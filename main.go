@@ -2096,3 +2096,52 @@ func maximumCandies(candies []int, k int64) int {
 	}
 	return res
 }
+
+func minNumberOfSeconds(mountainHeight int, workerTimes []int) int64 {
+	left := 1
+
+	var slowest int
+	for _, t := range workerTimes {
+		slowest = max(slowest, t)
+	}
+	right := slowest * mountainHeight * (mountainHeight + 1) / 2
+
+	res := int64(right)
+	for left <= right {
+		mid := left + (right-left)/2
+
+		if canComplete(int64(mid), mountainHeight, workerTimes) {
+			res = int64(mid)
+			right = mid - 1
+		} else {
+			left = mid + 1
+		}
+	}
+
+	return res
+}
+
+func canComplete(timeLimit int64, mountainHeight int, workerTimes []int) bool {
+	totalReduction := int64(0)
+
+	for _, t := range workerTimes {
+		low, high := int64(0), int64(mountainHeight)
+
+		for low <= high {
+			mid := low + (high-low)/2
+			timeRequired := int64(t) * (mid * (mid + 1)) / 2
+
+			if timeRequired <= timeLimit {
+				low = mid + 1
+			} else {
+				high = mid - 1
+			}
+		}
+
+		totalReduction += high
+		if totalReduction >= int64(mountainHeight) {
+			return true
+		}
+	}
+	return totalReduction >= int64(mountainHeight)
+}

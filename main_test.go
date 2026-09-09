@@ -2026,3 +2026,40 @@ func TestMaximumCandies(t *testing.T) {
 		})
 	}
 }
+
+func TestMinNumberOfSeconds(t *testing.T) {
+	testCases := []struct {
+		desc           string
+		mountainHeight int
+		workerTimes    []int
+		expect         int64
+	}{
+		{
+			desc:           "TC0: it should return 3",
+			mountainHeight: 4,
+			workerTimes:    []int{2, 1, 1},
+			expect:         int64(3),
+		}, {
+			desc:           "TC1: it should return 12",
+			mountainHeight: 10,
+			workerTimes:    []int{3, 2, 2, 4},
+			expect:         int64(12),
+		}, {
+			desc:           "TC2: it should return 15",
+			mountainHeight: 5,
+			workerTimes:    []int{1},
+			expect:         int64(15),
+		}, {
+			desc:           "TC3: it should return 10",
+			mountainHeight: 8,
+			workerTimes:    []int{1, 1},
+			expect:         int64(10),
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			actual := minNumberOfSeconds(tC.mountainHeight, tC.workerTimes)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}
