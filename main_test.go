@@ -2063,3 +2063,47 @@ func TestMinNumberOfSeconds(t *testing.T) {
 		})
 	}
 }
+
+func TestAvoidFlood(t *testing.T) {
+	testCases := []struct {
+		desc   string
+		rains  []int
+		expect []int
+	}{
+		{
+			desc:   "TC0: it should return [-1,-1,2,1,-1,-1]",
+			rains:  []int{1, 2, 0, 0, 2, 1},
+			expect: []int{-1, -1, 2, 1, -1, -1},
+		}, {
+			desc:   "TC1: it should return [-1, 2, -1, 1, -1, -1]",
+			rains:  []int{2, 0, 1, 0, 1, 2},
+			expect: []int{-1, 2, -1, 1, -1, -1},
+		}, {
+			desc:   "TC3: it should return [-1,-1,-1,-1]",
+			rains:  []int{1, 2, 3, 4},
+			expect: []int{-1, -1, -1, -1},
+		}, {
+			desc:   "TC4: it should return []",
+			rains:  []int{1, 2, 0, 1, 2},
+			expect: []int{},
+		}, {
+			desc:   "TC5: it should return [-1, 69, 1, 1, -1]",
+			rains:  []int{69, 0, 0, 0, 69},
+			expect: []int{-1, 69, 1, 1, -1},
+		}, {
+			desc:   "TC6: it should return []",
+			rains:  []int{0, 1, 1},
+			expect: []int{},
+		}, {
+			desc:   "TCO: it should return [-1,1,-1,2,-1,3,-1,2,1,1,-1,-1,-1]",
+			rains:  []int{1, 0, 2, 0, 3, 0, 2, 0, 0, 0, 1, 2, 3},
+			expect: []int{-1, 1, -1, 2, -1, 3, -1, 2, 1, 1, -1, -1, -1},
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			actual := avoidFlood(tC.rains)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}

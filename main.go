@@ -2145,3 +2145,61 @@ func canComplete(timeLimit int64, mountainHeight int, workerTimes []int) bool {
 	}
 	return totalReduction >= int64(mountainHeight)
 }
+
+func avoidFlood(rains []int) []int {
+	res := make([]int, len(rains))
+
+	filledLake := make(map[int]int)
+	dryDays := make([]int, 0)
+	var dryDay int
+	for i, l := range rains {
+		if l == 0 {
+			dryDays = append(dryDays, i)
+			continue
+		}
+
+		res[i] = -1
+
+		if d, exists := filledLake[l]; exists {
+			dryDay, dryDays = nextDryDay(dryDays, d)
+			if dryDay == -1 {
+				return []int{}
+			}
+			res[dryDay] = l
+		}
+		filledLake[l] = i
+	}
+
+	for i, l := range res {
+		if l == 0 {
+			res[i] = 1
+		}
+	}
+
+	return res
+}
+
+func nextDryDay(dryDays []int, filledDay int) (int, []int) {
+	left, right := 0, len(dryDays)-1
+
+	res := -1
+	for left <= right {
+		mid := left + (right-left)/2
+
+		if dryDays[mid] > filledDay {
+			res = mid
+			right = mid - 1
+		} else {
+			left = mid + 1
+		}
+	}
+
+	if res == -1 {
+		return -1, dryDays
+	}
+
+	nextDryDay := dryDays[res]
+	dryDays = append(dryDays[:res], dryDays[res+1:]...)
+
+	return nextDryDay, dryDays
+}
