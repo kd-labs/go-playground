@@ -2107,3 +2107,35 @@ func TestAvoidFlood(t *testing.T) {
 		})
 	}
 }
+
+func TestRepairCars(t *testing.T) {
+	testCases := []struct {
+		desc   string
+		ranks  []int
+		cars   int
+		expect int64
+	}{
+		{
+			desc:   "TC0: it should return 16",
+			ranks:  []int{4, 2, 3, 1},
+			cars:   10,
+			expect: int64(16),
+		}, {
+			desc:   "TC1: it should return 16",
+			ranks:  []int{5, 1, 8},
+			cars:   6,
+			expect: int64(16),
+		}, {
+			desc:   "TC2: it should return 8112",
+			ranks:  []int{3},
+			cars:   52,
+			expect: int64(8112),
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			actual := repairCars(tC.ranks, tC.cars)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}

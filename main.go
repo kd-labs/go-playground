@@ -2203,3 +2203,38 @@ func nextDryDay(dryDays []int, filledDay int) (int, []int) {
 
 	return nextDryDay, dryDays
 }
+
+func repairCars(ranks []int, cars int) int64 {
+	left := 1
+
+	minRank := math.MaxInt
+	for _, rank := range ranks {
+		if rank < minRank {
+			minRank = rank
+		}
+	}
+
+	right := minRank * cars * cars
+
+	var res int64
+	for left <= right {
+		mid := left + (right-left)/2
+
+		if isPossible(ranks, cars, mid) {
+			res = int64(mid)
+			right = mid - 1
+		} else {
+			left = mid + 1
+		}
+	}
+
+	return res
+}
+
+func isPossible(ranks []int, cars int, maxTime int) bool {
+	for _, rank := range ranks {
+		car := math.Floor(math.Sqrt(float64(maxTime) / float64(rank)))
+		cars = cars - int(car)
+	}
+	return cars <= 0
+}
