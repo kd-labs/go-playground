@@ -2238,3 +2238,39 @@ func isPossible(ranks []int, cars int, maxTime int) bool {
 	}
 	return cars <= 0
 }
+
+func minimizedMaximum(n int, quantities []int) int {
+	right := math.MinInt
+	for _, a := range quantities {
+		if a > right {
+			right = a
+		}
+	}
+	left := 1
+
+	var res int
+
+	for left <= right {
+		mid := left + (right-left)/2
+
+		stores := distribute(quantities, mid)
+		if stores <= n {
+			res = mid
+			right = mid - 1
+		} else {
+			left = mid + 1
+		}
+	}
+
+	return res
+}
+
+func distribute(quantities []int, limit int) int {
+	var stores int
+
+	for _, q := range quantities {
+		stores += int(math.Ceil(float64(q) / float64(limit)))
+	}
+
+	return stores
+}

@@ -2139,3 +2139,35 @@ func TestRepairCars(t *testing.T) {
 		})
 	}
 }
+
+func TestMinimizedMaximum(t *testing.T) {
+	testCases := []struct {
+		desc       string
+		quantities []int
+		stores     int
+		expect     int
+	}{
+		{
+			desc:       "TC0: it should return 3",
+			quantities: []int{11, 6},
+			stores:     6,
+			expect:     3,
+		}, {
+			desc:       "TC1: it should return 5",
+			quantities: []int{15, 10, 10},
+			stores:     7,
+			expect:     5,
+		}, {
+			desc:       "it should return 100000",
+			quantities: []int{100000},
+			stores:     1,
+			expect:     100000,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			actual := minimizedMaximum(tC.stores, tC.quantities)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}
