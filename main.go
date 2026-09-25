@@ -2274,3 +2274,30 @@ func distribute(quantities []int, limit int) int {
 
 	return stores
 }
+
+func countFairPairs(nums []int, lower int, upper int) int64 {
+	sort.Ints(nums)
+	var res int
+
+	for i, n := range nums {
+		x := lowerBound(nums, i+1, len(nums)-1, lower-n)
+		y := lowerBound(nums, i+1, len(nums)-1, upper+1-n)
+
+		res += y - x
+	}
+
+	return int64(res)
+}
+
+func lowerBound(nums []int, left, right, target int) int {
+	for left <= right {
+		mid := left + (right-left)/2
+
+		if nums[mid] >= target {
+			right = mid - 1
+		} else {
+			left = mid + 1
+		}
+	}
+	return left
+}
