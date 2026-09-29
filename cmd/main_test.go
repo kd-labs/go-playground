@@ -6,38 +6,28 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestSearch(t *testing.T) {
+func TestSearchInsert(t *testing.T) {
 	testCases := []struct {
 		desc   string
 		nums   []int
 		target int
-		expect bool
+		expect int
 	}{
 		{
-			desc:   "TC0: it should return true",
-			nums:   []int{2, 5, 6, 0, 0, 1, 2},
-			target: 0,
-			expect: true,
+			desc:   "TC0: it should return 4",
+			nums:   []int{-1, 0, 2, 4, 6, 8},
+			target: 5,
+			expect: 4,
 		}, {
-			desc:   "TC1: it should return false",
-			nums:   []int{2, 5, 6, 0, 0, 1, 2},
-			target: 3,
-			expect: false,
-		}, {
-			desc:   "TC2: it should return true",
-			nums:   []int{2, 2, 2, 3, 2, 2, 2},
-			target: 3,
-			expect: true,
-		}, {
-			desc:   "TC3: it should return true",
-			nums:   []int{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1},
-			target: 2,
-			expect: true,
+			desc:   "TC1: it should return 6",
+			nums:   []int{-1, 0, 2, 4, 6, 8},
+			target: 10,
+			expect: 6,
 		},
 	}
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
-			actual := search(tC.nums, tC.target)
+			actual := searchInsert(tC.nums, tC.target)
 			require.Equal(t, tC.expect, actual)
 		})
 	}
