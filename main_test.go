@@ -2201,3 +2201,35 @@ func TestCountFairPairs(t *testing.T) {
 		})
 	}
 }
+
+func TestMinimumSize(t *testing.T) {
+	testCases := []struct {
+		desc   string
+		bags   []int
+		maxOps int
+		expect int
+	}{
+		{
+			desc:   "TC0: it should return 3",
+			bags:   []int{9},
+			maxOps: 2,
+			expect: 3,
+		}, {
+			desc:   "TC1: it should return 2",
+			bags:   []int{2, 4, 8, 2},
+			maxOps: 4,
+			expect: 2,
+		}, {
+			desc:   "TC2: it should return 7",
+			bags:   []int{7, 17},
+			maxOps: 2,
+			expect: 7,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			actual := minimumSize(tC.bags, tC.maxOps)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}

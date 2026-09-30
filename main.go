@@ -2301,3 +2301,35 @@ func lowerBound(nums []int, left, right, target int) int {
 	}
 	return left
 }
+
+func divisionOps(nums []int, factor int) int {
+	var res int
+	for _, b := range nums {
+		if b > factor {
+			op := b / factor
+			if b%factor == 0 {
+				op -= 1
+			}
+			res += op
+		}
+	}
+	return res
+}
+
+func minimumSize(nums []int, maxOperations int) int {
+	left := 1
+	right := slices.Max(nums)
+
+	var res int
+	for left <= right {
+		mid := left + (right-left)/2
+
+		if divisionOps(nums, mid) <= maxOperations {
+			res = mid
+			right = mid - 1
+		} else {
+			left = mid + 1
+		}
+	}
+	return res
+}
