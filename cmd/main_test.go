@@ -6,28 +6,28 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestSearchInsert(t *testing.T) {
+func TestSearchMatrix(t *testing.T) {
 	testCases := []struct {
 		desc   string
-		nums   []int
+		matrix [][]int
 		target int
-		expect int
+		expect bool
 	}{
 		{
-			desc:   "TC0: it should return 4",
-			nums:   []int{-1, 0, 2, 4, 6, 8},
-			target: 5,
-			expect: 4,
+			desc:   "TC0: it should return true",
+			matrix: [][]int{{1, 3, 5, 7}, {10, 11, 16, 20}, {23, 30, 34, 60}},
+			target: 3,
+			expect: true,
 		}, {
-			desc:   "TC1: it should return 6",
-			nums:   []int{-1, 0, 2, 4, 6, 8},
-			target: 10,
-			expect: 6,
+			desc:   "TC1: it should return false",
+			matrix: [][]int{{1, 3, 5, 7}, {10, 11, 16, 20}, {23, 30, 34, 60}},
+			target: 13,
+			expect: false,
 		},
 	}
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
-			actual := searchInsert(tC.nums, tC.target)
+			actual := searchMatrix(tC.matrix, tC.target)
 			require.Equal(t, tC.expect, actual)
 		})
 	}
