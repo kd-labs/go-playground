@@ -2333,3 +2333,70 @@ func minimumSize(nums []int, maxOperations int) int {
 	}
 	return res
 }
+
+type MountainArray interface {
+	get(index int) int
+	length() int
+}
+
+type mountainArray struct {
+	arr []int
+}
+
+func (ma *mountainArray) get(index int) int {
+	return ma.arr[index]
+}
+
+func (ma *mountainArray) length() int {
+	return len(ma.arr)
+}
+
+func findInMountainArray(target int, mountainArr MountainArray) int {
+	// find peak
+
+	size := mountainArr.length()
+	left, right := 0, size-1
+	for left < right {
+		mid := left + (right-left)/2
+
+		if mountainArr.get(mid) > mountainArr.get(mid+1) {
+			right = mid
+		} else {
+			left = mid + 1
+		}
+	}
+	peak := left
+
+	// binary search on strictly increasing arr
+	left, right = 0, peak
+	for left <= right {
+		mid := left + (right-left)/2
+
+		e := mountainArr.get(mid)
+
+		if e == target {
+			return mid
+		} else if e < target {
+			left = mid + 1
+		} else {
+			right = mid - 1
+		}
+	}
+
+	left, right = peak+1, size-1
+	for left <= right {
+		mid := left + (right-left)/2
+
+		e := mountainArr.get(mid)
+
+		if e == target {
+			return mid
+		} else if e < target {
+			right = mid - 1
+		} else {
+			left = mid + 1
+		}
+	}
+
+	return -1
+}

@@ -2233,3 +2233,40 @@ func TestMinimumSize(t *testing.T) {
 		})
 	}
 }
+
+func TestFindInMountainArray(t *testing.T) {
+	testCases := []struct {
+		desc        string
+		mountainArr MountainArray
+		target      int
+		expect      int
+	}{
+		{
+			desc:        "TC0: it should return 2",
+			mountainArr: &mountainArray{arr: []int{1, 2, 3, 4, 5, 3, 1}},
+			target:      3,
+			expect:      2,
+		}, {
+			desc:        "TC1: it should return -1",
+			mountainArr: &mountainArray{arr: []int{0, 1, 2, 4, 2, 1}},
+			target:      3,
+			expect:      -1,
+		}, {
+			desc:        "TC2: it should return 1",
+			mountainArr: &mountainArray{arr: []int{1, 2, 3, 4, 5, 3, 1}},
+			target:      2,
+			expect:      1,
+		}, {
+			desc:        "TC3: it should return 3",
+			mountainArr: &mountainArray{arr: []int{0, 5, 3, 1}},
+			target:      1,
+			expect:      3,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			actual := findInMountainArray(tC.target, tC.mountainArr)
+			require.Equal(t, tC.expect, actual)
+		})
+	}
+}
