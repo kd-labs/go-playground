@@ -2400,3 +2400,40 @@ func findInMountainArray(target int, mountainArr MountainArray) int {
 
 	return -1
 }
+
+func minDays(bloomDay []int, m int, k int) int {
+	left, right := slices.Min(bloomDay), slices.Max(bloomDay)
+	res := -1
+	for left <= right {
+		mid := left + (right-left)/2
+
+		if bouquets(bloomDay, mid, k) >= m {
+			res = mid
+			right = mid - 1
+		} else {
+			left = mid + 1
+		}
+	}
+
+	return res
+}
+
+func bouquets(bloomDay []int, day, k int) int {
+	var bouquets int
+	var x int
+	for _, bd := range bloomDay {
+
+		if bd <= day {
+			x++
+		} else {
+			x = 0
+		}
+
+		if x == k {
+			bouquets++
+			x = 0
+		}
+	}
+
+	return bouquets
+}

@@ -2270,3 +2270,39 @@ func TestFindInMountainArray(t *testing.T) {
 		})
 	}
 }
+
+func TestMinDays(t *testing.T) {
+	testCases := []struct {
+		desc     string
+		bloomDay []int
+		m        int
+		k        int
+		want     int
+	}{
+		{
+			desc:     "TC0: it should return 3",
+			bloomDay: []int{1, 10, 3, 10, 2},
+			m:        3,
+			k:        1,
+			want:     3,
+		}, {
+			desc:     "TC1: it should return -1",
+			bloomDay: []int{1, 10, 3, 10, 2},
+			m:        3,
+			k:        2,
+			want:     -1,
+		}, {
+			desc:     "TC2: it should return 12",
+			bloomDay: []int{7, 7, 7, 7, 12, 7, 7},
+			m:        2,
+			k:        3,
+			want:     12,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			got := minDays(tC.bloomDay, tC.m, tC.k)
+			require.Equal(t, tC.want, got)
+		})
+	}
+}
