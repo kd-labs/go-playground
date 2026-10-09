@@ -1,23 +1,24 @@
 package main
 
-func searchMatrix(matrix [][]int, target int) bool {
-	rows := len(matrix)
-	cols := len(matrix[0])
-	left, right := 0, rows*cols-1
+func findKthPositive(arr []int, k int) int {
+	arrSize := len(arr)
+	nums := make([]int, arrSize)
+
+	for i := 0; i < arrSize; i++ {
+		nums[i] = i + 1
+	}
+
+	left, right := 0, arrSize-1
 
 	for left <= right {
 		mid := left + (right-left)/2
 
-		r := mid / cols
-		c := mid % cols
-
-		if matrix[r][c] == target {
-			return true
-		} else if matrix[r][c] > target {
-			right = mid - 1
-		} else {
+		misses := arr[mid] - nums[mid]
+		if misses < k {
 			left = mid + 1
+		} else {
+			right = mid - 1
 		}
 	}
-	return false
+	return left + k
 }
