@@ -1,24 +1,33 @@
 package main
 
-func findKthPositive(arr []int, k int) int {
-	arrSize := len(arr)
-	nums := make([]int, arrSize)
+func minEatingSpeed(piles []int, h int) int {
+	l, r := 1, 1
 
-	for i := 0; i < arrSize; i++ {
-		nums[i] = i + 1
+	for _, b := range piles {
+		r = max(r, b)
 	}
 
-	left, right := 0, arrSize-1
+	for l < r {
+		mid := l + (r-l)/2
 
-	for left <= right {
-		mid := left + (right-left)/2
-
-		misses := arr[mid] - nums[mid]
-		if misses < k {
-			left = mid + 1
+		t := timeToFinish(piles, mid)
+		if t <= h {
+			r = mid
 		} else {
-			right = mid - 1
+			l = mid + 1
 		}
 	}
-	return left + k
+	return l
+}
+
+func timeToFinish(piles []int, rate int) int {
+	var time int
+	for _, pile := range piles {
+		if pile%rate == 0 {
+			time += pile / rate
+		} else {
+			time += (pile / rate) + 1
+		}
+	}
+	return time
 }
