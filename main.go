@@ -2437,3 +2437,33 @@ func bouquets(bloomDay []int, day, k int) int {
 
 	return bouquets
 }
+
+func countPairs(nums []int, target int) int {
+	slices.Sort(nums)
+
+	arrSize := len(nums)
+	var res int
+	for i, a := range nums {
+		b := target - a
+
+		if b < a {
+			break
+		}
+
+		lo, hi := i+1, arrSize-1
+
+		for lo <= hi {
+			mid := lo + (hi-lo)/2
+
+			if nums[mid] < b {
+				lo = mid + 1
+			} else {
+				hi = mid - 1
+			}
+		}
+
+		res += lo - i - 1
+
+	}
+	return res
+}

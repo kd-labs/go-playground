@@ -2306,3 +2306,35 @@ func TestMinDays(t *testing.T) {
 		})
 	}
 }
+
+func TestCountPairs(t *testing.T) {
+	testCases := []struct {
+		desc   string
+		nums   []int
+		target int
+		want   int
+	}{
+		{
+			desc:   "TC0: it returns 3",
+			nums:   []int{-1, 1, 2, 3, 1},
+			target: 2,
+			want:   3,
+		}, {
+			desc:   "TC1: it returns 10",
+			nums:   []int{-6, 2, 5, -2, -7, -1, 3},
+			target: -2,
+			want:   10,
+		}, {
+			desc:   "TC2: it returns 1",
+			nums:   []int{-5, 0, -7, -1, 9, 8, -9, 9},
+			target: -14,
+			want:   1,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			got := countPairs(tC.nums, tC.target)
+			require.Equal(t, tC.want, got)
+		})
+	}
+}
