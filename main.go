@@ -2467,3 +2467,58 @@ func countPairs(nums []int, target int) int {
 	}
 	return res
 }
+
+func possibleFreqWithKOps(nums []int, prefixArr []int, f int, k int64) bool {
+	left, right := 0, f-1
+
+	for right < len(nums) {
+		mid := (left + right) / 2
+
+		var got int
+		if mid > 0 {
+			got += prefixArr[mid-1]
+		}
+		if left > 0 {
+			got = got - prefixArr[left-1]
+		}
+		ops := nums[mid]*(mid-left) - got
+		got = prefixArr[right] - prefixArr[mid]
+
+		ops += got - (nums[mid] * (right - mid))
+		if int64(ops) <= k {
+			return true
+		} else {
+			left++
+			right++
+		}
+	}
+
+	return false
+}
+
+func maxFrequencyScore(nums []int, k int64) int {
+	slices.Sort(nums)
+
+	prefixSum := make([]int, len(nums))
+	for i, e := range nums {
+		if i == 0 {
+			prefixSum[i] = e
+		} else {
+			prefixSum[i] = prefixSum[i-1] + e
+		}
+	}
+
+	l, r := 1, len(nums)
+	var res int
+	for l <= r {
+		f := l + (r-l)/2
+
+		if possibleFreqWithKOps(nums, prefixSum, f, k) {
+			res = f
+			l = f + 1
+		} else {
+			r = f - 1
+		}
+	}
+	return res
+}

@@ -2338,3 +2338,35 @@ func TestCountPairs(t *testing.T) {
 		})
 	}
 }
+
+func TestMaxFrequencyScore(t *testing.T) {
+	testCases := []struct {
+		desc string
+		nums []int
+		k    int64
+		want int
+	}{
+		{
+			desc: "TC0: it should return 3",
+			nums: []int{1, 2, 6, 4},
+			k:    int64(3),
+			want: 3,
+		}, {
+			desc: "TC1: it should return 3",
+			nums: []int{1, 4, 4, 2, 4},
+			k:    int64(0),
+			want: 3,
+		}, {
+			desc: "TC2: it should return 10",
+			nums: []int{3, 20, 13, 2, 3, 15, 24, 19, 8, 13, 19, 20, 21},
+			k:    int64(45),
+			want: 10,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			got := maxFrequencyScore(tC.nums, tC.k)
+			require.Equal(t, tC.want, got)
+		})
+	}
+}
