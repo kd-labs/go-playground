@@ -2522,3 +2522,49 @@ func maxFrequencyScore(nums []int, k int64) int {
 	}
 	return res
 }
+
+func maxScore(points []int, m int) int64 {
+	var l, r, res int64
+	l, r = 1, 1e15
+
+	for l <= r {
+		mid := l + (r-l)/2
+
+		if possibleInMMoves(points, mid, int64(m)) {
+			res = mid
+			l = mid + 1
+		} else {
+			r = mid - 1
+		}
+	}
+	return res
+}
+
+func ceilDiv(a, b int64) int64 {
+	return (a + b - 1) / b
+}
+
+func possibleInMMoves(points []int, targetScore int64, maxMoves int64) bool {
+	var toPlay, advanceGamesNext, moves, normalMoves int64
+	for i := 0; i < len(points); i++ {
+
+		toPlay = ceilDiv(targetScore, int64(points[i]))
+
+		if advanceGamesNext >= toPlay {
+			normalMoves++
+			advanceGamesNext = 0
+		} else {
+			alreadyScored := advanceGamesNext * int64(points[i])
+			remainingGamesToPlay := ceilDiv(targetScore-alreadyScored, int64(points[i]))
+			moves += (remainingGamesToPlay * 2) - 1
+			moves += normalMoves
+			normalMoves = 0
+			advanceGamesNext = remainingGamesToPlay - 1
+
+			if moves > maxMoves {
+				return false
+			}
+		}
+	}
+	return moves <= maxMoves
+}

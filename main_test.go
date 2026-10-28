@@ -2370,3 +2370,35 @@ func TestMaxFrequencyScore(t *testing.T) {
 		})
 	}
 }
+
+func TestMaxScore(t *testing.T) {
+	testCases := []struct {
+		desc   string
+		points []int
+		moves  int
+		want   int
+	}{
+		{
+			desc:   "TC0: it should return 4",
+			points: []int{2, 4},
+			moves:  3,
+			want:   4,
+		}, {
+			desc:   "TC1: it should return 2",
+			points: []int{1, 2, 3},
+			moves:  5,
+			want:   2,
+		}, {
+			desc:   "TC2: it should return 12",
+			points: []int{5, 3},
+			moves:  8,
+			want:   12,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			got := maxScore(tC.points, tC.moves)
+			require.Equal(t, int64(tC.want), got)
+		})
+	}
+}
