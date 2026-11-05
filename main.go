@@ -2568,3 +2568,27 @@ func possibleInMMoves(points []int, targetScore int64, maxMoves int64) bool {
 	}
 	return moves <= maxMoves
 }
+
+func containsNearbyDuplicate(nums []int, k int) bool {
+	i, j := 0, 0
+	s := make(map[int]struct{})
+
+	for j-i <= k && j < len(nums) {
+		if _, exists := s[nums[j]]; exists {
+			return true
+		}
+		s[nums[j]] = struct{}{}
+		j++
+	}
+
+	for j < len(nums) {
+		delete(s, nums[i])
+		i++
+		if _, exists := s[nums[j]]; exists {
+			return true
+		}
+		s[nums[j]] = struct{}{}
+		j++
+	}
+	return false
+}

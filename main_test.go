@@ -2402,3 +2402,40 @@ func TestMaxScore(t *testing.T) {
 		})
 	}
 }
+
+func TestContainsNearbyDuplicate(t *testing.T) {
+	testCases := []struct {
+		desc string
+		nums []int
+		k    int
+		want bool
+	}{
+		{
+			desc: "TC0: it should return true",
+			nums: []int{1, 2, 3, 1},
+			k:    3,
+			want: true,
+		}, {
+			desc: "TC1: it should return false",
+			nums: []int{2, 1, 2},
+			k:    1,
+			want: false,
+		}, {
+			desc: "TC2: it should return false",
+			nums: []int{1, 2, 3, 4, 5},
+			k:    0,
+			want: false,
+		}, {
+			desc: "TC3: it should return true",
+			nums: []int{1, 2, 2, 3},
+			k:    3,
+			want: true,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			got := containsNearbyDuplicate(tC.nums, tC.k)
+			require.Equal(t, tC.want, got)
+		})
+	}
+}
