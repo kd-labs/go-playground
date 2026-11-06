@@ -2592,3 +2592,38 @@ func containsNearbyDuplicate(nums []int, k int) bool {
 	}
 	return false
 }
+
+func apSum(a int, d int, n int) int {
+	s := (n * (2*a + (n-1)*d)) / 2
+	return s
+}
+
+func arrSum(index int, n int, value int) int {
+	s := value
+
+	leftSum := apSum(value-1, -1, min(index, value-1)) + max(0, index-value+1)
+
+	rightSum := apSum(value-1, -1, min(n-1-index, value-1)) + max(0, n-index-value)
+
+	s += leftSum + rightSum
+
+	return s
+}
+
+func maxValue(n int, index int, maxSum int) int {
+	left, right := 1, maxSum
+
+	var res int
+	for left <= right {
+		mid := left + (right-left)/2
+
+		sum := arrSum(index, n, mid)
+		if sum <= maxSum {
+			res = mid
+			left = mid + 1
+		} else {
+			right = mid - 1
+		}
+	}
+	return res
+}

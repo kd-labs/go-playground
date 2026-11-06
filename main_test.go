@@ -2439,3 +2439,33 @@ func TestContainsNearbyDuplicate(t *testing.T) {
 		})
 	}
 }
+
+func TestMaxValue(t *testing.T) {
+	testCases := []struct {
+		desc   string
+		n      int
+		index  int
+		maxSum int
+		want   int
+	}{
+		{
+			desc:   "TC1: it should return 2",
+			n:      4,
+			index:  2,
+			maxSum: 6,
+			want:   2,
+		}, {
+			desc:   "TC2: it should return 3",
+			n:      6,
+			index:  1,
+			maxSum: 10,
+			want:   3,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			got := maxValue(tC.n, tC.index, tC.maxSum)
+			require.Equal(t, tC.want, got)
+		})
+	}
+}
