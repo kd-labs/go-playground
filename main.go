@@ -2627,3 +2627,15 @@ func maxValue(n int, index int, maxSum int) int {
 	}
 	return res
 }
+
+func maxProfit(prices []int) int {
+	var profit int
+	bought := math.MaxInt
+
+	for _, p := range prices {
+		bought = min(bought, p)
+		profit = max(profit, p-bought)
+	}
+
+	return profit
+}

@@ -2469,3 +2469,31 @@ func TestMaxValue(t *testing.T) {
 		})
 	}
 }
+
+func TestMaxProfit(t *testing.T) {
+	testCases := []struct {
+		desc   string
+		prices []int
+		want   int
+	}{
+		{
+			desc:   "TC1: it should return 6",
+			prices: []int{10, 1, 5, 6, 7, 1},
+			want:   6,
+		}, {
+			desc:   "TC2: it should return 0",
+			prices: []int{10, 8, 7, 5, 2},
+			want:   0,
+		}, {
+			desc:   "TC3: it should return 5",
+			prices: []int{7, 1, 5, 3, 6, 4},
+			want:   5,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			got := maxProfit(tC.prices)
+			require.Equal(t, tC.want, got)
+		})
+	}
+}
