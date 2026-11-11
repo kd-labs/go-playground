@@ -2677,3 +2677,23 @@ func maxDistance(position []int, m int) int {
 	}
 	return res
 }
+
+func lengthOfLongestSubstring(s string) int {
+	cache := make(map[rune]struct{})
+	var res, k int
+
+	for i, r := range s {
+		for {
+			if _, exists := cache[r]; exists {
+				delete(cache, rune(s[k]))
+				k++
+			} else {
+				break
+			}
+		}
+		cache[r] = struct{}{}
+		res = max(res, i-k+1)
+	}
+
+	return res
+}

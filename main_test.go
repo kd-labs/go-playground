@@ -2524,3 +2524,39 @@ func TestMaxDistance(t *testing.T) {
 		})
 	}
 }
+
+func TestLengthOfLongestSubstring(t *testing.T) {
+	testCases := []struct {
+		desc string
+		s    string
+		want int
+	}{
+		{
+			desc: "TC1: it should return 3",
+			s:    "zxyzxyz",
+			want: 3,
+		}, {
+			desc: "TC2: it should return 1",
+			s:    "xxx",
+			want: 1,
+		}, {
+			desc: "TC3: it should return 3",
+			s:    "pwwkew",
+			want: 3,
+		}, {
+			desc: "TC4: it should return 5",
+			s:    "tmmzuxt",
+			want: 5,
+		}, {
+			desc: "TC5: it should return 0",
+			s:    "",
+			want: 0,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			got := lengthOfLongestSubstring(tC.s)
+			require.Equal(t, tC.want, got)
+		})
+	}
+}
