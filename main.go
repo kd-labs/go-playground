@@ -2639,3 +2639,41 @@ func maxProfit(prices []int) int {
 
 	return profit
 }
+
+func maxDistancePossible(position []int, minForceDiff int, balls int) bool {
+	placed := 1
+	lastPlacedAt := position[0]
+
+	for i := 1; i < len(position); i++ {
+		if position[i]-lastPlacedAt >= minForceDiff {
+			placed++
+			lastPlacedAt = position[i]
+		}
+
+		if placed == balls {
+			break
+		}
+	}
+
+	return placed == balls
+}
+
+func maxDistance(position []int, m int) int {
+	sort.Ints(position)
+	minPos := position[0]
+	maxPos := position[len(position)-1]
+	left, right := 1, maxPos-minPos
+	var res int
+
+	for left <= right {
+		mid := left + (right-left)/2
+
+		if maxDistancePossible(position, mid, m) {
+			res = mid
+			left = mid + 1
+		} else {
+			right = mid - 1
+		}
+	}
+	return res
+}

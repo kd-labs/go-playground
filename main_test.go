@@ -2497,3 +2497,30 @@ func TestMaxProfit(t *testing.T) {
 		})
 	}
 }
+
+func TestMaxDistance(t *testing.T) {
+	testCases := []struct {
+		desc     string
+		position []int
+		balls    int
+		want     int
+	}{
+		{
+			desc:     "TC1: it should return min magnetic force of 3",
+			position: []int{1, 2, 3, 4, 7},
+			balls:    3,
+			want:     3,
+		}, {
+			desc:     "TC2: it should return min magnetic force of 2",
+			position: []int{5, 4, 3, 2, 1, 1000000000},
+			balls:    2,
+			want:     999999999,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			got := maxDistance(tC.position, tC.balls)
+			require.Equal(t, tC.want, got)
+		})
+	}
+}
