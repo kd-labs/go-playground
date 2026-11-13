@@ -2697,3 +2697,44 @@ func lengthOfLongestSubstring(s string) int {
 
 	return res
 }
+
+func countPairsWithDiff(nums []int, diff int) int {
+	i, j := 0, 1
+	var count int
+
+	for j < len(nums) {
+		if nums[j]-nums[i] <= diff {
+			count += j - i
+			j++
+		} else {
+			i++
+			if i == j {
+				j++
+			}
+		}
+	}
+	return count
+}
+
+func smallestDistancePair(nums []int, k int) int {
+	sort.Ints(nums)
+	smallest := nums[0]
+	largest := nums[len(nums)-1]
+
+	var res int
+	lo, hi := 0, (largest - smallest)
+
+	for lo <= hi {
+		diff := lo + (hi-lo)/2
+
+		c := countPairsWithDiff(nums, diff)
+		if c >= k {
+			res = diff
+			hi = diff - 1
+		} else {
+			lo = diff + 1
+		}
+	}
+
+	return res
+}

@@ -2560,3 +2560,35 @@ func TestLengthOfLongestSubstring(t *testing.T) {
 		})
 	}
 }
+
+func TestSmallestDistancePair(t *testing.T) {
+	testCases := []struct {
+		desc string
+		nums []int
+		k    int
+		want int
+	}{
+		{
+			desc: "TC1: it should return diff 0",
+			nums: []int{1, 3, 1},
+			k:    1,
+			want: 0,
+		}, {
+			desc: "TC2: it should return diff 0",
+			nums: []int{1, 1, 1},
+			k:    2,
+			want: 0,
+		}, {
+			desc: "TC3: it should return diff 5",
+			nums: []int{1, 6, 1},
+			k:    3,
+			want: 5,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			got := smallestDistancePair(tC.nums, tC.k)
+			require.Equal(t, tC.want, got)
+		})
+	}
+}
