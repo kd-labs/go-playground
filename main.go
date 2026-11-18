@@ -2738,3 +2738,56 @@ func smallestDistancePair(nums []int, k int) int {
 
 	return res
 }
+
+func maxProfitAssignment(difficulty []int, profit []int, worker []int) int {
+	type job struct {
+		difficulty int
+		profit     int
+	}
+
+	jobs := make([]job, 0, len(difficulty))
+
+	for i, d := range difficulty {
+		jobs = append(jobs, job{d, profit[i]})
+	}
+
+	slices.SortFunc(jobs, func(a, b job) int {
+		if a.difficulty < b.difficulty {
+			return -1
+		} else if a.difficulty > b.difficulty {
+			return 1
+		} else {
+			return 0
+		}
+	})
+
+	var maxProfitSeen int
+	for i, j := range jobs {
+		if j.profit > maxProfitSeen {
+			maxProfitSeen = j.profit
+		} else {
+			j.profit = maxProfitSeen
+			jobs[i] = j
+		}
+	}
+
+	e := len(jobs) - 1
+	var maxProfit int
+	for _, w := range worker {
+		lo, hi := 0, e
+
+		var profit int
+		for lo <= hi {
+			mid := lo + (hi-lo)/2
+
+			if jobs[mid].difficulty <= w {
+				profit = jobs[mid].profit
+				lo = mid + 1
+			} else {
+				hi = mid - 1
+			}
+		}
+		maxProfit += profit
+	}
+	return maxProfit
+}
