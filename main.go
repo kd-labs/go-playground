@@ -2791,3 +2791,38 @@ func maxProfitAssignment(difficulty []int, profit []int, worker []int) int {
 	}
 	return maxProfit
 }
+
+func canBeSplit(nums []int, maxSum, m int) bool {
+	var splits, sum int
+	for _, n := range nums {
+		if sum+n <= maxSum {
+			sum += n
+		} else {
+			splits++
+			sum = n
+		}
+	}
+
+	return splits+1 <= m
+}
+
+func splitArray(nums []int, m int) int {
+	lo := slices.Max(nums)
+	var hi int
+	for _, n := range nums {
+		hi += n
+	}
+
+	var res int
+	for lo <= hi {
+		mid := lo + (hi-lo)/2
+
+		if canBeSplit(nums, mid, m) {
+			res = mid
+			hi = mid - 1
+		} else {
+			lo = mid + 1
+		}
+	}
+	return res
+}

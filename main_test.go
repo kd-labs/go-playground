@@ -2628,3 +2628,35 @@ func TestMaxProfitAssignment(t *testing.T) {
 		})
 	}
 }
+
+func TestSplitArray(t *testing.T) {
+	testCases := []struct {
+		desc string
+		nums []int
+		m    int
+		want int
+	}{
+		{
+			desc: "TC1: it should return smallest largest sum of 16",
+			nums: []int{2, 4, 10, 1, 5},
+			m:    2,
+			want: 16,
+		}, {
+			desc: "TC2: it should return smallest largest sum of 5",
+			nums: []int{1, 0, 2, 3, 5},
+			m:    4,
+			want: 5,
+		}, {
+			desc: "TC3: it should return smallest largest sum of 18",
+			nums: []int{7, 2, 5, 10, 8},
+			m:    2,
+			want: 18,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			got := splitArray(tC.nums, tC.m)
+			require.Equal(t, tC.want, got)
+		})
+	}
+}
