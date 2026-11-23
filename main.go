@@ -2826,3 +2826,65 @@ func splitArray(nums []int, m int) int {
 	}
 	return res
 }
+
+func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
+	if len(nums2) < len(nums1) {
+		nums1, nums2 = nums2, nums1
+	}
+
+	totalElements := len(nums1) + len(nums2)
+	leftPart := (totalElements + 1) / 2
+
+	lo, hi := 0, len(nums1)
+	for lo <= hi {
+		Px := lo + (hi-lo)/2 // from nums1 in left partition
+		Py := leftPart - Px  // from nums2 in left partition
+
+		// left partition
+		var x1 int
+		if Px == 0 {
+			x1 = math.MinInt
+		} else {
+			x1 = nums1[Px-1]
+		}
+
+		var x2 int
+		if Py == 0 {
+			x2 = math.MinInt
+		} else {
+			x2 = nums2[Py-1]
+		}
+
+		// right partition
+		var x3 int
+		if Px == len(nums1) {
+			x3 = math.MaxInt
+		} else {
+			x3 = nums1[Px]
+		}
+
+		var x4 int
+		if Py == len(nums2) {
+			x4 = math.MaxInt
+		} else {
+			x4 = nums2[Py]
+		}
+
+		if x1 <= x4 && x2 <= x3 { // we have created the correct partitions
+			if totalElements%2 == 1 { // if odd, then 1 median
+				return float64(max(x1, x2))
+			} else {
+				return float64((max(x1, x2) + min(x3, x4))) / 2
+			}
+		}
+
+		if x1 > x4 {
+			hi = Px - 1
+		} else {
+			lo = Px + 1
+		}
+
+	}
+
+	return -1
+}

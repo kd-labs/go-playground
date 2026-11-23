@@ -2660,3 +2660,35 @@ func TestSplitArray(t *testing.T) {
 		})
 	}
 }
+
+func TestFindMedianSortedArrays(t *testing.T) {
+	testCases := []struct {
+		desc  string
+		nums1 []int
+		nums2 []int
+		want  float64
+	}{
+		{
+			desc:  "TC1: it should return median 2.0",
+			nums1: []int{1, 2},
+			nums2: []int{3},
+			want:  2.0,
+		}, {
+			desc:  "TC2: it should return median 2.5",
+			nums1: []int{1, 3},
+			nums2: []int{2, 4},
+			want:  2.5,
+		}, {
+			desc:  "TC3: it should return median 2.0",
+			nums1: []int{1, 3},
+			nums2: []int{2},
+			want:  2.0,
+		},
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			got := findMedianSortedArrays(tC.nums1, tC.nums2)
+			require.Equal(t, tC.want, got)
+		})
+	}
+}
